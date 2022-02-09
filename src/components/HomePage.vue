@@ -19,11 +19,7 @@
           <div class="flex justify-start lg:w-0 lg:flex-1">
             <a href="#">
               <span class="sr-only">QuickAdmit</span>
-              <img
-                class="h-8 w-auto sm:h-10"
-                src="http://bahramm15.sg-host.com/wp-content/uploads/2021/11/QA-FinalLogo-horizontal-sm.png"
-                alt=""
-              />
+              <img class="h-8 w-auto sm:h-10" src="/logo-wide.png" alt="" />
             </a>
           </div>
           <PopoverGroup as="nav" class="hidden md:flex space-x-10">
@@ -90,11 +86,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div class="relative shadow-xl sm:rounded-2xl sm:overflow-hidden">
             <div class="absolute inset-0">
-              <img
-                class="h-full w-full object-cover"
-                src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2830&q=80&sat=-100"
-                alt="People working on laptops"
-              />
+              <img class="h-full w-full object-cover" src="/people-on-laptops.png" />
               <div
                 class="
                   absolute
@@ -282,13 +274,6 @@
                   </div>
                   <footer class="mt-3">
                     <div class="flex items-center space-x-3">
-                      <div class="flex-shrink-0">
-                        <img
-                          class="h-6 w-6 rounded-full"
-                          src="https://images.unsplash.com/photo-1509783236416-c9ad59bae472?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
-                          alt=""
-                        />
-                      </div>
                       <div class="text-base font-medium text-gray-700">
                         Simon Jozani, Pet owner
                       </div>
@@ -332,8 +317,7 @@
             <div class="h-full xl:relative xl:col-start-2">
               <img
                 class="h-full w-full object-cover opacity-25 xl:absolute xl:inset-0"
-                src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2830&q=80&sat=-100"
-                alt="People working on laptops"
+                src="/people-on-laptops.png"
               />
               <div
                 aria-hidden="true"
