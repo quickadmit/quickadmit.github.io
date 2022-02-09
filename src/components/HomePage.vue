@@ -301,7 +301,7 @@
                     lg:absolute lg:left-0 lg:h-full lg:w-auto lg:max-w-none
                   "
                   src="/screenshot.png"
-                  alt="Inbox user interface"
+                  alt="Inquiry interface"
                 />
               </div>
             </div>
@@ -309,7 +309,6 @@
         </div>
       </div>
 
-      <!-- Gradient Feature Section -->
       <!-- Stats section -->
       <div class="relative bg-gray-900">
         <div class="h-80 absolute inset-x-0 bottom-0 xl:top-0 xl:h-full">
