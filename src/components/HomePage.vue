@@ -508,8 +508,11 @@
                           font-medium
                           rounded-md
                           text-white
-                          bg-gray-800
-                          hover:bg-gray-900
+                          from-purple-600
+                          to-indigo-600
+                          bg-gradient-to-r bg-origin-border
+                          hover:from-purple-700 hover:to-indigo-700
+                          shadow-sm
                         "
                       >
                         Get Access
@@ -649,10 +652,8 @@
                     flex
                     items-center
                     justify-center
-                    bg-gradient-to-r
-                    from-purple-600
-                    to-indigo-600
-                    bg-origin-border
+                    bg-gray-800
+                    hover:bg-gray-900
                     px-4
                     py-3
                     border border-transparent
@@ -661,7 +662,6 @@
                     rounded-md
                     shadow-sm
                     text-white
-                    hover:from-purple-700 hover:to-indigo-700
                   "
                 >
                   Subscribe
