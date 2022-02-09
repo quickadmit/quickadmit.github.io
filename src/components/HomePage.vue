@@ -517,9 +517,7 @@
                     </div>
                   </div>
                   <div class="mt-4 text-sm">
-                    <a href="#" class="font-medium text-gray-900">
-                      Get a demonstration
-                    </a>
+                    <a href="#" class="font-medium text-gray-900"> Request a demo </a>
                   </div>
                 </div>
               </div>
