@@ -235,8 +235,7 @@
                   <p class="mt-4 text-lg text-gray-500">
                     Semper curabitur ullamcorper posuere nunc sed. Ornare iaculis
                     bibendum malesuada faucibus lacinia porttitor. Pulvinar laoreet
-                    sagittis viverra duis. In venenatis sem arcu pretium pharetra at.
-                    Lectus viverra dui tellus ornare pharetra.
+                    sagittis viverra duis.
                   </p>
                   <div class="mt-6">
                     <a
@@ -362,8 +361,7 @@
             <p class="mt-5 text-lg text-gray-300">
               Rhoncus sagittis risus arcu erat lectus bibendum. Ut in adipiscing quis in
               viverra tristique sem. Ornare feugiat viverra eleifend fusce orci in quis
-              amet. Sit in et vitae tortor, massa. Dapibus laoreet amet lacus nibh
-              integer quis. Eu vulputate diam sit tellus quis at.
+              amet.
             </p>
             <div class="mt-12 grid grid-cols-1 gap-y-12 gap-x-6 sm:grid-cols-2">
               <p v-for="item in metrics" :key="item.id">
@@ -412,9 +410,9 @@
                     Monthly Membership
                   </h3>
                   <p class="mt-6 text-base text-gray-500">
-                    This is our early-bird unlimited plan, availible for a limited time.
-                    It is a discounted rate with with a not-so-discounted set of
-                    features. This plans subscribers
+                    This is our early-bird plan, available for a limited time. It is a
+                    discounted rate with with a not-so-discounted set of features. This
+                    plan's subscribers
                     <strong>will be grandfathered</strong> when we start our normal
                     pricing.
                   </p>
