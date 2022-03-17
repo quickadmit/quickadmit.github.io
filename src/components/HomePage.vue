@@ -479,7 +479,11 @@
                     <span class="ml-3 text-xl font-medium text-gray-500"> USD </span>
                   </div>
                   <p class="mt-4 text-sm">
-                    <a href="#" class="font-medium text-gray-500 underline">
+                    <a
+                      href="https://app.quickadmit.com/terms"
+                      target="_blank"
+                      class="font-medium text-gray-500 underline"
+                    >
                       Learn about our membership policy
                     </a>
                   </p>
