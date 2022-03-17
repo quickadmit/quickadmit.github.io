@@ -140,7 +140,7 @@
                     Get started
                   </a>
                   <a
-                    href="#"
+                    href="mailto:support@quickadmit.com"
                     class="
                       flex
                       items-center
@@ -158,7 +158,7 @@
                       sm:px-8
                     "
                   >
-                    Live demo
+                    Contact
                   </a>
                 </div>
               </div>
