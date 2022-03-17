@@ -381,15 +381,15 @@
                 Simple no-tricks pricing
               </h2>
               <p class="mt-4 text-xl text-gray-600">
-                If you're not satisfied, contact us within the first 14 days and we'll
-                send you a full refund.
+                We have plans to fit any team, regardless of size. Our standard plan is
+                a great way to get started...
               </p>
             </div>
           </div>
         </div>
-        <div class="mt-8 bg-white pb-16 sm:mt-12 sm:pb-20 lg:pb-28">
+        <div class="mt-8 sm:mt-12">
           <div class="relative">
-            <div class="absolute inset-0 h-1/2 bg-gray-100" />
+            <div class="absolute inset-0 bg-gray-100" />
             <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div
                 class="
@@ -403,14 +403,10 @@
               >
                 <div class="flex-1 bg-white px-6 py-8 lg:p-12">
                   <h3 class="text-2xl font-extrabold text-gray-900 sm:text-3xl">
-                    Monthly Membership
+                    Standard Monthly Plan
                   </h3>
                   <p class="mt-6 text-base text-gray-500">
-                    This is our early-bird plan, available for a limited time. It is a
-                    discounted rate with with a not-so-discounted set of features. This
-                    plan's subscribers
-                    <strong>will be grandfathered</strong> when we start our normal
-                    pricing.
+                    This is our entry-level plan to get a small team started.
                   </p>
                   <div class="mt-8">
                     <div class="flex items-center">
@@ -479,7 +475,7 @@
                       text-gray-900
                     "
                   >
-                    <span> $499 </span>
+                    <span> $225 </span>
                     <span class="ml-3 text-xl font-medium text-gray-500"> USD </span>
                   </div>
                   <p class="mt-4 text-sm">
@@ -514,7 +510,9 @@
                     </div>
                   </div>
                   <div class="mt-4 text-sm">
-                    <a href="#" class="font-medium text-gray-900"> Request a demo </a>
+                    <a v-if="false" href="#" class="font-medium text-gray-900">
+                      View other plans
+                    </a>
                   </div>
                 </div>
               </div>
@@ -526,144 +524,9 @@
       <!-- CTA Section -->
     </main>
 
-    <footer class="bg-gray-50" aria-labelledby="footer-heading">
+    <footer class="bg-gray-100" aria-labelledby="footer-heading">
       <h2 id="footer-heading" class="sr-only">Footer</h2>
-      <div class="max-w-7xl mx-auto pt-16 pb-8 px-4 sm:px-6 lg:pt-24 lg:px-8">
-        <div class="xl:grid xl:grid-cols-3 xl:gap-8">
-          <div class="grid grid-cols-2 gap-8 xl:col-span-2">
-            <div class="md:grid md:grid-cols-2 md:gap-8">
-              <div>
-                <h3
-                  class="text-sm font-semibold text-gray-400 tracking-wider uppercase"
-                >
-                  Solutions
-                </h3>
-                <ul role="list" class="mt-4 space-y-4">
-                  <li v-for="item in footerNavigation.solutions" :key="item.name">
-                    <a
-                      :href="item.href"
-                      class="text-base text-gray-500 hover:text-gray-900"
-                    >
-                      {{ item.name }}
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div class="mt-12 md:mt-0">
-                <h3
-                  class="text-sm font-semibold text-gray-400 tracking-wider uppercase"
-                >
-                  Support
-                </h3>
-                <ul role="list" class="mt-4 space-y-4">
-                  <li v-for="item in footerNavigation.support" :key="item.name">
-                    <a
-                      :href="item.href"
-                      class="text-base text-gray-500 hover:text-gray-900"
-                    >
-                      {{ item.name }}
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="md:grid md:grid-cols-2 md:gap-8">
-              <div>
-                <h3
-                  class="text-sm font-semibold text-gray-400 tracking-wider uppercase"
-                >
-                  Company
-                </h3>
-                <ul role="list" class="mt-4 space-y-4">
-                  <li v-for="item in footerNavigation.company" :key="item.name">
-                    <a
-                      :href="item.href"
-                      class="text-base text-gray-500 hover:text-gray-900"
-                    >
-                      {{ item.name }}
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div class="mt-12 md:mt-0">
-                <h3
-                  class="text-sm font-semibold text-gray-400 tracking-wider uppercase"
-                >
-                  Legal
-                </h3>
-                <ul role="list" class="mt-4 space-y-4">
-                  <li v-for="item in footerNavigation.legal" :key="item.name">
-                    <a
-                      :href="item.href"
-                      class="text-base text-gray-500 hover:text-gray-900"
-                    >
-                      {{ item.name }}
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="mt-12 xl:mt-0">
-            <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-              Subscribe to our newsletter
-            </h3>
-            <p class="mt-4 text-base text-gray-500">
-              The latest news, articles, and resources, sent to your inbox weekly.
-            </p>
-            <form class="mt-4 sm:flex sm:max-w-md">
-              <label for="email-address" class="sr-only">Email address</label>
-              <input
-                type="email"
-                name="email-address"
-                id="email-address"
-                autocomplete="email"
-                required=""
-                class="
-                  appearance-none
-                  min-w-0
-                  w-full
-                  bg-white
-                  border border-gray-300
-                  rounded-md
-                  shadow-sm
-                  py-2
-                  px-4
-                  text-base text-gray-900
-                  placeholder-gray-500
-                  focus:outline-none
-                  focus:ring-indigo-500
-                  focus:border-indigo-500
-                  focus:placeholder-gray-400
-                "
-                placeholder="Enter your email"
-              />
-              <div class="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">
-                <button
-                  type="submit"
-                  class="
-                    w-full
-                    flex
-                    items-center
-                    justify-center
-                    bg-gray-800
-                    hover:bg-gray-900
-                    px-4
-                    py-3
-                    border border-transparent
-                    text-base
-                    font-medium
-                    rounded-md
-                    shadow-sm
-                    text-white
-                  "
-                >
-                  Subscribe
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+      <div class="max-w-7xl mx-auto pt-8 pb-8 px-4 sm:px-6 lg:pt-12 lg:px-8">
         <div
           class="
             mt-12
@@ -673,7 +536,7 @@
             lg:mt-16
           "
         >
-          <div class="flex space-x-6 md:order-2">
+          <div class="flex space-x-6 md:order-2" v-if="false">
             <a
               v-for="item in footerNavigation.social"
               :key="item.name"
@@ -709,10 +572,10 @@ import {
 import { ChevronDownIcon } from "@heroicons/vue/solid";
 
 const includedFeatures = [
-  "Unlimited inquiries per month",
-  "Unlimited users",
-  "Unlimited providers",
-  "Official QuickAdmit t-shirt",
+  "250 inquiries included per month",
+  "$0.55 per additional inquiry",
+  "Three user accounts",
+  "One facility/provider",
 ];
 
 /* const includedFeatures = [
