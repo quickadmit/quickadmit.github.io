@@ -22,20 +22,6 @@
               <img class="h-8 w-auto sm:h-10" src="/logo-wide.png" alt="" />
             </a>
           </div>
-          <PopoverGroup as="nav" class="hidden md:flex space-x-10">
-            <a
-              href="#pricing"
-              class="text-base font-medium text-gray-500 hover:text-gray-900"
-            >
-              Pricing
-            </a>
-            <a href="#" class="text-base font-medium text-gray-500 hover:text-gray-900">
-              Partners
-            </a>
-            <a href="#" class="text-base font-medium text-gray-500 hover:text-gray-900">
-              Company
-            </a>
-          </PopoverGroup>
           <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
             <a
               href="https://app.quickadmit.com/login"
@@ -120,8 +106,8 @@
                   sm:max-w-3xl
                 "
               >
-                Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem
-                cupidatat commodo. Elit sunt amet fugiat veniam occaecat fugiat aliqua.
+                With access to over 800 commercial insurance payers 24/7, QuickAdmit
+                gives you the information you need when you need it.
               </p>
               <div
                 class="mt-10 max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center"
@@ -230,12 +216,13 @@
                 </div>
                 <div class="mt-6">
                   <h2 class="text-3xl font-extrabold tracking-tight text-gray-900">
-                    Painless benefit inquiries
+                    Painless benefit inquiries.
                   </h2>
                   <p class="mt-4 text-lg text-gray-500">
-                    Semper curabitur ullamcorper posuere nunc sed. Ornare iaculis
-                    bibendum malesuada faucibus lacinia porttitor. Pulvinar laoreet
-                    sagittis viverra duis.
+                    QuickAdmit gives you single sign-on access with over 800 commercial
+                    insurance payers and works with any desktop, tablet, or mobile
+                    device. Get the comprehensive benefit details your team needs to
+                    make the right decisions.
                   </p>
                   <div class="mt-6">
                     <a
@@ -345,6 +332,7 @@
           <div class="relative pt-12 pb-64 sm:pt-24 sm:pb-64 xl:col-start-1 xl:pb-24">
             <h2 class="text-sm font-semibold tracking-wide uppercase">
               <span
+                v-if="false"
                 class="
                   bg-gradient-to-r
                   from-purple-300
@@ -355,13 +343,21 @@
                 >Valuable Historical Data</span
               >
             </h2>
-            <p class="mt-3 text-3xl font-extrabold text-white">
-              Get actionable data that will help your business make decisions
+            <!-- Original <p class="mt-3 text-3xl font-extrabold text-white"> -->
+            <p
+              class="
+                bg-gradient-to-r
+                from-purple-300
+                to-indigo-300
+                bg-clip-text
+                text-transparent text-3xl
+              "
+            >
+              Get actionable data that will help your team make decisions.
             </p>
             <p class="mt-5 text-lg text-gray-300">
-              Rhoncus sagittis risus arcu erat lectus bibendum. Ut in adipiscing quis in
-              viverra tristique sem. Ornare feugiat viverra eleifend fusce orci in quis
-              amet.
+              QuickAdmit gives your Admissions team the tools to quickly identify
+              insurance coverage and financial options.
             </p>
             <div class="mt-12 grid grid-cols-1 gap-y-12 gap-x-6 sm:grid-cols-2">
               <p v-for="item in metrics" :key="item.id">
@@ -758,25 +754,25 @@ const metrics = [
     id: 1,
     stat: "800+",
     emphasis: "Payers",
-    rest: "available for 24/7 benefit checks.",
+    rest: "available for 24/7 benefit inquiries.",
   },
   {
     id: 2,
-    stat: "5+",
-    emphasis: "Years of historical data",
-    rest: "to help you make decisions.",
+    stat: "Access",
+    emphasis: "Available ",
+    rest: "on any device, anywhere.",
   },
   {
     id: 3,
-    stat: "98%",
-    emphasis: "Customer satisfaction",
-    rest: "laoreet amet lacus nibh integer quis.",
+    stat: "Benefits",
+    emphasis: "Access",
+    rest: "Access to extensive benefit details.",
   },
   {
     id: 4,
-    stat: "1M+",
-    emphasis: "Inquiries handled",
-    rest: "lacus nibh integer quis.",
+    stat: "Conversions",
+    emphasis: "Convert",
+    rest: " your calls to admissions!",
   },
 ];
 const footerNavigation = {
