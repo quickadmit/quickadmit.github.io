@@ -633,7 +633,7 @@ const metrics = [
     id: 3,
     stat: "Benefits",
     emphasis: "Access",
-    rest: "Access to extensive benefit details.",
+    rest: "to extensive benefit details.",
   },
   {
     id: 4,
