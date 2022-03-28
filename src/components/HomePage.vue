@@ -578,8 +578,8 @@ import { ChevronDownIcon } from "@heroicons/vue/solid";
 const includedFeatures = [
   "250 inquiries included per month",
   "$0.55 per additional inquiry",
-  "Three user accounts",
-  "One facility/provider",
+  "3 user accounts",
+  "1 facility/provider",
 ];
 
 /* const includedFeatures = [
