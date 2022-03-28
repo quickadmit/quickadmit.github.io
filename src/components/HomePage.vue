@@ -249,7 +249,7 @@
                   </div>
                 </div>
               </div>
-              <div class="mt-8 border-t border-gray-200 pt-6">
+              <div class="mt-8 border-t border-gray-200 pt-6" v-if="false">
                 <blockquote>
                   <div>
                     <p class="text-base text-gray-500">
