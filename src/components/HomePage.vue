@@ -3,18 +3,7 @@
     <header>
       <Popover class="relative bg-white">
         <div
-          class="
-            flex
-            justify-between
-            items-center
-            max-w-7xl
-            mx-auto
-            px-4
-            py-6
-            sm:px-6
-            md:justify-start md:space-x-10
-            lg:px-8
-          "
+          class="flex justify-between items-center max-w-7xl mx-auto px-4 py-6 sm:px-6 md:justify-start md:space-x-10 lg:px-8"
         >
           <div class="flex justify-start lg:w-0 lg:flex-1">
             <a href="#">
@@ -25,38 +14,13 @@
           <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
             <a
               href="https://app.quickadmit.com/login"
-              class="
-                whitespace-nowrap
-                text-base
-                font-medium
-                text-gray-500
-                hover:text-gray-900
-              "
+              class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
             >
               Login
             </a>
             <a
               href="https://app.quickadmit.com/register"
-              class="
-                ml-8
-                whitespace-nowrap
-                inline-flex
-                items-center
-                justify-center
-                bg-gradient-to-r
-                from-purple-600
-                to-indigo-600
-                bg-origin-border
-                px-4
-                py-2
-                border border-transparent
-                rounded-md
-                shadow-sm
-                text-base
-                font-medium
-                text-white
-                hover:from-purple-700 hover:to-indigo-700
-              "
+              class="ml-8 whitespace-nowrap inline-flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white hover:from-purple-700 hover:to-indigo-700"
             >
               Get Access
             </a>
@@ -74,37 +38,18 @@
             <div class="absolute inset-0">
               <img class="h-full w-full object-cover" src="/people-on-laptops.png" />
               <div
-                class="
-                  absolute
-                  inset-0
-                  bg-gradient-to-r
-                  from-purple-800
-                  to-indigo-700
-                  mix-blend-multiply
-                "
+                class="absolute inset-0 bg-gradient-to-r from-purple-800 to-indigo-700 mix-blend-multiply"
               />
             </div>
             <div class="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
               <h1
-                class="
-                  text-center text-4xl
-                  font-extrabold
-                  tracking-tight
-                  sm:text-5xl
-                  lg:text-6xl
-                "
+                class="text-center text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl"
               >
                 <span class="block text-white">Ready, Set,</span>
                 <span class="block text-indigo-200">Admit.</span>
               </h1>
               <p
-                class="
-                  mt-6
-                  max-w-lg
-                  mx-auto
-                  text-center text-xl text-indigo-200
-                  sm:max-w-3xl
-                "
+                class="mt-6 max-w-lg mx-auto text-center text-xl text-indigo-200 sm:max-w-3xl"
               >
                 With access to over 800 commercial insurance payers 24/7, QuickAdmit
                 gives you the information you need when you need it.
@@ -113,50 +58,17 @@
                 class="mt-10 max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center"
               >
                 <div
-                  class="
-                    space-y-4
-                    sm:space-y-0 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5
-                  "
+                  class="space-y-4 sm:space-y-0 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5"
                 >
                   <a
                     href="https://app.quickadmit.com/register"
-                    class="
-                      flex
-                      items-center
-                      justify-center
-                      px-4
-                      py-3
-                      border border-transparent
-                      text-base
-                      font-medium
-                      rounded-md
-                      shadow-sm
-                      text-indigo-700
-                      bg-white
-                      hover:bg-indigo-50
-                      sm:px-8
-                    "
+                    class="flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-indigo-700 bg-white hover:bg-indigo-50 sm:px-8"
                   >
                     Get started
                   </a>
                   <a
                     href="mailto:support@quickadmit.com"
-                    class="
-                      flex
-                      items-center
-                      justify-center
-                      px-4
-                      py-3
-                      border border-transparent
-                      text-base
-                      font-medium
-                      rounded-md
-                      shadow-sm
-                      text-white
-                      bg-indigo-500 bg-opacity-60
-                      hover:bg-opacity-70
-                      sm:px-8
-                    "
+                    class="flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-500 bg-opacity-60 hover:bg-opacity-70 sm:px-8"
                   >
                     Contact
                   </a>
@@ -177,39 +89,15 @@
         />
         <div class="relative">
           <div
-            class="
-              lg:mx-auto
-              lg:max-w-7xl
-              lg:px-8
-              lg:grid
-              lg:grid-cols-2
-              lg:grid-flow-col-dense
-              lg:gap-24
-            "
+            class="lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-24"
           >
             <div
-              class="
-                px-4
-                max-w-xl
-                mx-auto
-                sm:px-6
-                lg:py-16 lg:max-w-none lg:mx-0 lg:px-0
-              "
+              class="px-4 max-w-xl mx-auto sm:px-6 lg:py-16 lg:max-w-none lg:mx-0 lg:px-0"
             >
               <div>
                 <div>
                   <span
-                    class="
-                      h-12
-                      w-12
-                      rounded-md
-                      flex
-                      items-center
-                      justify-center
-                      bg-gradient-to-r
-                      from-purple-600
-                      to-indigo-600
-                    "
+                    class="h-12 w-12 rounded-md flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600"
                   >
                     <InboxIcon class="h-6 w-6 text-white" aria-hidden="true" />
                   </span>
@@ -227,22 +115,7 @@
                   <div class="mt-6">
                     <a
                       href="https://app.quickadmit.com/register"
-                      class="
-                        inline-flex
-                        bg-gradient-to-r
-                        from-purple-600
-                        to-indigo-600
-                        bg-origin-border
-                        px-4
-                        py-2
-                        border border-transparent
-                        text-base
-                        font-medium
-                        rounded-md
-                        shadow-sm
-                        text-white
-                        hover:from-purple-700 hover:to-indigo-700
-                      "
+                      class="inline-flex bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white hover:from-purple-700 hover:to-indigo-700"
                     >
                       Get started
                     </a>
@@ -270,22 +143,10 @@
             </div>
             <div class="mt-12 sm:mt-16 lg:mt-0">
               <div
-                class="
-                  pl-4
-                  -mr-48
-                  sm:pl-6
-                  md:-mr-16
-                  lg:px-0 lg:m-0 lg:relative lg:h-full
-                "
+                class="pl-4 -mr-48 sm:pl-6 md:-mr-16 lg:px-0 lg:m-0 lg:relative lg:h-full"
               >
                 <img
-                  class="
-                    w-full
-                    rounded-xl
-                    shadow-xl
-                    ring-1 ring-black ring-opacity-5
-                    lg:absolute lg:left-0 lg:h-full lg:w-auto lg:max-w-none
-                  "
+                  class="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:h-full lg:w-auto lg:max-w-none"
                   src="/screenshot.png"
                   alt="Inquiry interface"
                 />
@@ -306,52 +167,25 @@
               />
               <div
                 aria-hidden="true"
-                class="
-                  absolute
-                  inset-x-0
-                  top-0
-                  h-32
-                  bg-gradient-to-b
-                  from-gray-900
-                  xl:inset-y-0 xl:left-0 xl:h-full xl:w-32 xl:bg-gradient-to-r
-                "
+                class="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-gray-900 xl:inset-y-0 xl:left-0 xl:h-full xl:w-32 xl:bg-gradient-to-r"
               />
             </div>
           </div>
         </div>
         <div
-          class="
-            max-w-4xl
-            mx-auto
-            px-4
-            sm:px-6
-            lg:max-w-7xl lg:px-8
-            xl:grid xl:grid-cols-2 xl:grid-flow-col-dense xl:gap-x-8
-          "
+          class="max-w-4xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 xl:grid xl:grid-cols-2 xl:grid-flow-col-dense xl:gap-x-8"
         >
           <div class="relative pt-12 pb-64 sm:pt-24 sm:pb-64 xl:col-start-1 xl:pb-24">
             <h2 class="text-sm font-semibold tracking-wide uppercase">
               <span
                 v-if="false"
-                class="
-                  bg-gradient-to-r
-                  from-purple-300
-                  to-indigo-300
-                  bg-clip-text
-                  text-transparent
-                "
+                class="bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text text-transparent"
                 >Valuable Historical Data</span
               >
             </h2>
             <!-- Original <p class="mt-3 text-3xl font-extrabold text-white"> -->
             <p
-              class="
-                bg-gradient-to-r
-                from-purple-300
-                to-indigo-300
-                bg-clip-text
-                text-transparent text-3xl
-              "
+              class="bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text text-transparent text-3xl"
             >
               Get actionable data that will help your team make decisions.
             </p>
@@ -392,14 +226,7 @@
             <div class="absolute inset-0 bg-gray-100" />
             <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div
-                class="
-                  max-w-lg
-                  mx-auto
-                  rounded-lg
-                  shadow-lg
-                  overflow-hidden
-                  lg:max-w-none lg:flex
-                "
+                class="max-w-lg mx-auto rounded-lg shadow-lg overflow-hidden lg:max-w-none lg:flex"
               >
                 <div class="flex-1 bg-white px-6 py-8 lg:p-12">
                   <h3 class="text-2xl font-extrabold text-gray-900 sm:text-3xl">
@@ -411,16 +238,7 @@
                   <div class="mt-8">
                     <div class="flex items-center">
                       <h4
-                        class="
-                          flex-shrink-0
-                          pr-4
-                          bg-white
-                          text-sm
-                          tracking-wider
-                          font-semibold
-                          uppercase
-                          text-indigo-600
-                        "
+                        class="flex-shrink-0 pr-4 bg-white text-sm tracking-wider font-semibold uppercase text-indigo-600"
                       >
                         What's included
                       </h4>
@@ -428,11 +246,7 @@
                     </div>
                     <ul
                       role="list"
-                      class="
-                        mt-8
-                        space-y-5
-                        lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-5
-                      "
+                      class="mt-8 space-y-5 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-5"
                     >
                       <li
                         v-for="feature in includedFeatures"
@@ -453,27 +267,13 @@
                   </div>
                 </div>
                 <div
-                  class="
-                    py-8
-                    px-6
-                    text-center
-                    bg-gray-50
-                    lg:flex-shrink-0 lg:flex lg:flex-col lg:justify-center lg:p-12
-                  "
+                  class="py-8 px-6 text-center bg-gray-50 lg:flex-shrink-0 lg:flex lg:flex-col lg:justify-center lg:p-12"
                 >
                   <p class="text-lg leading-6 font-medium text-gray-900">
                     Pay now, cancel whenever
                   </p>
                   <div
-                    class="
-                      mt-4
-                      flex
-                      items-center
-                      justify-center
-                      text-5xl
-                      font-extrabold
-                      text-gray-900
-                    "
+                    class="mt-4 flex items-center justify-center text-5xl font-extrabold text-gray-900"
                   >
                     <span> $225 </span>
                     <span class="ml-3 text-xl font-medium text-gray-500"> USD </span>
@@ -491,23 +291,7 @@
                     <div class="rounded-md shadow">
                       <a
                         href="https://app.quickadmit.com/register"
-                        class="
-                          flex
-                          items-center
-                          justify-center
-                          px-5
-                          py-3
-                          border border-transparent
-                          text-base
-                          font-medium
-                          rounded-md
-                          text-white
-                          from-purple-600
-                          to-indigo-600
-                          bg-gradient-to-r bg-origin-border
-                          hover:from-purple-700 hover:to-indigo-700
-                          shadow-sm
-                        "
+                        class="flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white from-purple-600 to-indigo-600 bg-gradient-to-r bg-origin-border hover:from-purple-700 hover:to-indigo-700 shadow-sm"
                       >
                         Get Access
                       </a>
@@ -532,13 +316,7 @@
       <h2 id="footer-heading" class="sr-only">Footer</h2>
       <div class="max-w-7xl mx-auto pt-8 pb-8 px-4 sm:px-6 lg:pt-12 lg:px-8">
         <div
-          class="
-            mt-12
-            border-t border-gray-200
-            pt-8
-            md:flex md:items-center md:justify-between
-            lg:mt-16
-          "
+          class="mt-12 border-t border-gray-200 pt-8 md:flex md:items-center md:justify-between lg:mt-16"
         >
           <div class="flex space-x-6 md:order-2" v-if="false">
             <a
