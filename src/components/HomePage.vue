@@ -275,7 +275,7 @@
                   <div
                     class="mt-4 flex items-center justify-center text-5xl font-extrabold text-gray-900"
                   >
-                    <span> $225 </span>
+                    <span> $285 </span>
                     <span class="ml-3 text-xl font-medium text-gray-500"> USD </span>
                   </div>
                   <p class="mt-4 text-sm">
@@ -354,10 +354,10 @@ import {
 import { ChevronDownIcon } from "@heroicons/vue/solid";
 
 const includedFeatures = [
-  "250 inquiries included per month",
-  "$0.55 per additional inquiry",
-  "3 user accounts",
-  "1 facility/provider",
+  "300 inquiries included per month",
+  "$0.85 per additional inquiry",
+  "Unlimited user accounts",
+  "Unlimited providers/facilities",
 ];
 
 /* const includedFeatures = [
