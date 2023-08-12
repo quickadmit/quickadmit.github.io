@@ -19,10 +19,10 @@
               Login
             </a>
             <a
-              href="https://app.quickadmit.com/register"
+              href="https://meetings.hubspot.com/bspircu/quickadmitwebdemo"
               class="ml-8 whitespace-nowrap inline-flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white hover:from-purple-700 hover:to-indigo-700"
             >
-              Get Access
+              Schedule Demo
             </a>
           </div>
           <div class="md:hidden flex">
@@ -69,10 +69,10 @@
                   class="space-y-4 sm:space-y-0 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5"
                 >
                   <a
-                    href="https://app.quickadmit.com/register"
+                    href="https://meetings.hubspot.com/bspircu/quickadmitwebdemo"
                     class="flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-indigo-700 bg-white hover:bg-indigo-50 sm:px-8"
                   >
-                    Get started
+                    Schedule Demo
                   </a>
                   <a
                     href="mailto:support@quickadmit.com"
@@ -122,10 +122,10 @@
                   </p>
                   <div class="mt-6">
                     <a
-                      href="https://app.quickadmit.com/register"
+                      href="https://meetings.hubspot.com/bspircu/quickadmitwebdemo"
                       class="inline-flex bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white hover:from-purple-700 hover:to-indigo-700"
                     >
-                      Get started
+                      Schedule Demo
                     </a>
                   </div>
                 </div>
@@ -298,12 +298,21 @@
                   <div class="mt-6">
                     <div class="rounded-md shadow">
                       <a
-                        href="https://app.quickadmit.com/register"
+                        href="https://meetings.hubspot.com/bspircu/quickadmitwebdemo"
                         class="flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white from-purple-600 to-indigo-600 bg-gradient-to-r bg-origin-border hover:from-purple-700 hover:to-indigo-700 shadow-sm"
                       >
-                        Get Access
+                        Schedule Demo
                       </a>
                     </div>
+                    <p class="mt-4 text-sm">
+                      <a
+                        href="https://app.quickadmit.com/register"
+                        target="_blank"
+                        class="font-medium text-gray-500 underline"
+                      >
+                        Or Register Now
+                      </a>
+                    </p>
                   </div>
                   <div class="mt-4 text-sm">
                     <a v-if="false" href="#" class="font-medium text-gray-900">
