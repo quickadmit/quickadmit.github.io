@@ -19,7 +19,7 @@
               Login
             </a>
             <a
-              href="https://meetings.hubspot.com/bspircu/quickadmitwebdemo"
+              href="https://meetings.hubspot.com/bspircu/demo-call-round-robin"
               class="ml-8 whitespace-nowrap inline-flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white hover:from-purple-700 hover:to-indigo-700"
             >
               Schedule Demo
@@ -69,7 +69,7 @@
                   class="space-y-4 sm:space-y-0 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5"
                 >
                   <a
-                    href="https://meetings.hubspot.com/bspircu/quickadmitwebdemo"
+                    href="https://meetings.hubspot.com/bspircu/demo-call-round-robin"
                     class="flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-indigo-700 bg-white hover:bg-indigo-50 sm:px-8"
                   >
                     Schedule Demo
@@ -122,7 +122,7 @@
                   </p>
                   <div class="mt-6">
                     <a
-                      href="https://meetings.hubspot.com/bspircu/quickadmitwebdemo"
+                      href="https://meetings.hubspot.com/bspircu/demo-call-round-robin"
                       class="inline-flex bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white hover:from-purple-700 hover:to-indigo-700"
                     >
                       Schedule Demo
@@ -298,7 +298,7 @@
                   <div class="mt-6">
                     <div class="rounded-md shadow">
                       <a
-                        href="https://meetings.hubspot.com/bspircu/quickadmitwebdemo"
+                        href="https://meetings.hubspot.com/bspircu/demo-call-round-robin"
                         class="flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white from-purple-600 to-indigo-600 bg-gradient-to-r bg-origin-border hover:from-purple-700 hover:to-indigo-700 shadow-sm"
                       >
                         Schedule Demo
