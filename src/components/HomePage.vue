@@ -59,7 +59,7 @@
               <p
                 class="mt-6 max-w-lg mx-auto text-center text-xl text-indigo-200 sm:max-w-3xl"
               >
-                With access to over 800 commercial insurance payers 24/7, QuickAdmit
+                With access to over 900 commercial insurance payers 24/7, QuickAdmit
                 gives you the information you need when you need it.
               </p>
               <div
