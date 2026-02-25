@@ -16,6 +16,9 @@
       <b-navbar-item tag="router-link" :to="{ name: 'BlogView' }" class="nav-link">
         Blog
       </b-navbar-item>
+      <b-navbar-item tag="router-link" :to="{ name: 'ContactView' }" class="nav-link">
+        Contact
+      </b-navbar-item>
     </template>
 
     <template #end>
