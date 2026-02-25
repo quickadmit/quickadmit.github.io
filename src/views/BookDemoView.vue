@@ -42,7 +42,7 @@
     <!-- MAIN SCHEDULER CARD -->
     <div class="demo-card reveal" ref="scheduler">
       <iframe src="https://meetings-na2.hubspot.com/bspircu/demo-call-round-robin" frameborder="0"
-        scrolling="no"></iframe>
+        scrolling="yes"></iframe>
     </div>
 
     <!-- TRUST FOOTER -->
