@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import healthImg from "../assets/health.png";
+
 export default {
   name: "ContactView",
   mounted() {
