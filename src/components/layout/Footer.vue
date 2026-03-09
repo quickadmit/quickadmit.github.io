@@ -4,7 +4,7 @@
       <div class="columns is-variable is-8">
         <div class="column is-3">
           <div class="footer-logo mb-5">
-            <img src="../../assets/logo3.png" alt="QuickAdmit Logo" class="qa-logo" />
+            <img src="../../assets/logo_v4.png" alt="QuickAdmit Logo" class="qa-logo" />
           </div>
           <div class="compliance-badges">
             <div class="badge">
