@@ -2,7 +2,7 @@
   <b-navbar class="qa-navbar" :fixed-top="true" :transparent="false" :mobile-burger="true">
     <template #brand>
       <b-navbar-item tag="router-link" :to="{ path: '/' }" class="logo-container">
-        <img src="../../assets/logo3.png" alt="QuickAdmit Logo" class="qa-logo" />
+        <img src="../../assets/logo_v4.png" alt="QuickAdmit Logo" class="qa-logo" />
       </b-navbar-item>
     </template>
 
