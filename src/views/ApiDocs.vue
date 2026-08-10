@@ -213,12 +213,24 @@ const schemaExample = `{
         "name": "memberId",
         "label": "Patient ID",
         "type": "text",
-        "allowed": true
+        "allowed": true,
+        "required": true
+      },
+      "patientBirthDate": {
+        "name": "patientBirthDate",
+        "label": "Patient Birth Date",
+        "type": "date",
+        "allowed": true,
+        "required": true,
+        "min": "1900-01-01",
+        "max": "2026-08-10"
       },
       "serviceType": {
         "name": "serviceType",
         "label": "Service Type",
         "type": "choice",
+        "allowed": true,
+        "required": true,
         "multiple": true,
         "options": [
           { "id": "MH", "name": "Mental Health" },
@@ -383,6 +395,20 @@ const responseProvider = `{
   }
 }`;
 
+const responseServiceCodes = `{
+  "service_codes": [
+    { "code": "MH", "name": "Mental Health" },
+    { "code": "CG", "name": "Mental Health Facility - Inpatient" },
+    { "code": "CH", "name": "Mental Health Facility - Outpatient" },
+    { "code": "CE", "name": "Mental Health Provider - Inpatient" },
+    { "code": "CF", "name": "Mental Health Provider - Outpatient" },
+    { "code": "AI", "name": "Substance Abuse" },
+    { "code": "CI", "name": "Substance Abuse Facility - Inpatient" },
+    { "code": "CJ", "name": "Substance Abuse Facility - Outpatient" },
+    { "code": "98", "name": "Professional (Physician) Visit - Office" }
+  ]
+}`;
+
 const responseReimbursement = `{
   "reimbursement_aggregation": {
     "id": 901,
@@ -443,7 +469,7 @@ const endpointGroups = [
   {
     id: "payers",
     title: "Payers",
-    description: "Payers represent the supported health plans that can receive eligibility requests. Search payers to choose the right plan, then load the payer schema to see which patient, subscriber, and service fields are required before submitting.",
+    description: "Payers represent the supported health plans that can receive eligibility requests. Search payers to choose the right plan, then load the payer schema before creating an inquiry. The schema is the contract for the inquiry request: it tells you which fields to collect, which field combination to use, and which service codes are accepted for that payer.",
     endpoints: [
       {
         method: "GET",
@@ -459,7 +485,7 @@ const endpointGroups = [
         method: "GET",
         path: "/payers/{id}",
         title: "Get payer schema",
-        description: "Returns a payer plus the request schema used to create eligibility inquiries.",
+        description: "Returns the payer plus the schema used to build POST /inquiries. Read schema.fields for request field definitions and schema.combos for valid required-field combinations.",
         query: [],
         request: null,
         response: schemaExample,
@@ -476,14 +502,62 @@ const endpointGroups = [
         ],
       },
       {
-        title: "Response fields",
-        description: "The schema tells your integration which fields to collect before submitting eligibility.",
+        title: "Payer response fields",
+        description: "The payer object identifies the plan. The schema object explains how to build an eligibility inquiry for that payer.",
         fields: [
           { name: "payer.id", description: "Payer ID to send as payerId in eligibility create requests." },
           { name: "payer.name", description: "Payer display name." },
-          { name: "schema.fields", description: "Field definitions, labels, types, allowed values, and options for the payer." },
-          { name: "schema.combos", description: "Allowed required-field combinations. Send the selected array index as selectedCombo." },
           { name: "total", description: "Total matching payers before pagination on list responses." },
+        ],
+      },
+      {
+        title: "Schema fields",
+        description: "Every key under schema.fields is a field name you can send in POST /inquiries when it is allowed by the selected payer.",
+        fields: [
+          { name: "schema.fields.<field>.name", description: "Request key to send, for example memberId or patientBirthDate." },
+          { name: "schema.fields.<field>.label", description: "Human-readable label you can show in your form." },
+          { name: "schema.fields.<field>.type", description: "Expected input type, such as text, date, or choice." },
+          { name: "schema.fields.<field>.required", description: "Whether the payer marks this field as required." },
+          { name: "schema.fields.<field>.allowed", description: "Whether this field can be sent for this payer." },
+          { name: "schema.fields.<field>.options", description: "Allowed values for choice fields. Send the option id, not the display name." },
+          { name: "schema.fields.serviceType.options", description: "Service codes available for this payer. Use GET /service-codes for the full supported catalog." },
+        ],
+      },
+      {
+        title: "Using schema in POST /inquiries",
+        description: "Pick one combo you can satisfy, send every field in that combo, and send the combo index as selectedCombo.",
+        fields: [
+          { name: "schema.combos", description: "Valid required-field combinations. Each array contains request field names." },
+          { name: "schema.combos[0]", description: "If you use the first combo, send selectedCombo: 0 in POST /inquiries." },
+          { name: "memberId / patientBirthDate", description: "Example fields from a combo. Send them as top-level inquiry request fields." },
+          { name: "serviceType", description: "Send one service code or an array of codes from schema.fields.serviceType.options." },
+          { name: "payerId", description: "Use payer.id from this response." },
+        ],
+      },
+    ],
+  },
+  {
+    id: "service-codes",
+    title: "Service Codes",
+    description: "Service codes describe the care categories used on eligibility requests. Use this catalog for supported code names, then use the payer schema to choose the serviceType values available for a specific payer.",
+    endpoints: [
+      {
+        method: "GET",
+        path: "/service-codes",
+        title: "List service codes",
+        description: "Returns the supported service code catalog. This endpoint is not paginated.",
+        query: [],
+        request: null,
+        response: responseServiceCodes,
+      },
+    ],
+    fieldSections: [
+      {
+        title: "Response fields",
+        description: "Send the code value in serviceType when it is allowed by the selected payer schema.",
+        fields: [
+          { name: "service_codes[].code", description: "Service code value, for example MH or 98." },
+          { name: "service_codes[].name", description: "Human-readable service category name." },
         ],
       },
     ],
@@ -545,7 +619,7 @@ const endpointGroups = [
           { name: "patientFirstName", description: "Patient first name when required by the payer schema." },
           { name: "patientLastName", description: "Patient last name when required by the payer schema." },
           { name: "subscriberRelationship", description: "Relationship code for the patient and subscriber, for example 18 for self." },
-          { name: "serviceType", description: "Service type ID or array of IDs from the payer schema." },
+          { name: "serviceType", description: "Service code or array of codes allowed by the payer schema." },
           { name: "asOfDate", description: "Eligibility date. Defaults to today when omitted." },
           { name: "selectedCombo", description: "Zero-based index from schema.combos matching the fields you send." },
         ],
@@ -714,6 +788,7 @@ const navItems = [
   { id: "authentication", label: "Authentication" },
   { id: "providers", label: "Providers" },
   { id: "payers", label: "Payers" },
+  { id: "service-codes", label: "Service Codes" },
   { id: "eligibility", label: "Eligibility" },
   { id: "blanket-vob", label: "Blanket VOB" },
   { id: "reimbursements", label: "Reimbursements" },
