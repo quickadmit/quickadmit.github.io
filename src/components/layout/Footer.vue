@@ -30,6 +30,9 @@
             <li>
               <router-link to="/products" class="link-style">Reimbursement</router-link>
             </li>
+            <li>
+              <router-link to="/api-docs" class="link-style">API Docs</router-link>
+            </li>
           </ul>
         </div>
 
