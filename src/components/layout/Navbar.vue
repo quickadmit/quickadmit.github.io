@@ -13,9 +13,6 @@
       <b-navbar-item tag="router-link" :to="{ name: 'Products' }" class="nav-link">
         Products
       </b-navbar-item>
-      <b-navbar-item tag="router-link" :to="{ name: 'ApiDocs' }" class="nav-link">
-        API Docs
-      </b-navbar-item>
       <b-navbar-item tag="router-link" :to="{ name: 'BlogView' }" class="nav-link">
         Blog
       </b-navbar-item>
