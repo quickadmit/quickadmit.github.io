@@ -21,10 +21,9 @@
               <div class="eyebrow">API documentation</div>
               <h1>QuickAdmit API</h1>
               <p>
-                Build directly into QuickAdmit's eligibility, Blanket VOB, payer,
-                and reimbursement workflows. The API is designed around a
-                single app entry point, API-key authentication, and account-level
-                access.
+                Build directly into QuickAdmit's eligibility, Blanket VOB, and
+                payer workflows. The API is designed around a single app entry
+                point, API-key authentication, and account-level access.
               </p>
             </div>
             <div class="docs-header-visual" aria-hidden="true">
@@ -409,23 +408,6 @@ const responseServiceCodes = `{
   ]
 }`;
 
-const responseReimbursement = `{
-  "reimbursement_aggregation": {
-    "id": 901,
-    "prefix_id": 12,
-    "group_id": 34,
-    "payer_id": 56,
-    "dtx": 42.5,
-    "rtc": 51.2,
-    "php": null,
-    "iop": 38.9,
-    "op": null,
-    "average": 44.2,
-    "status": "has_data",
-    "created_at": "2026-08-10T12:00:00Z"
-  }
-}`;
-
 const endpointGroups = [
   {
     id: "providers",
@@ -736,50 +718,6 @@ const endpointGroups = [
       },
     ],
   },
-  {
-    id: "reimbursements",
-    title: "Reimbursements",
-    description: "Reimbursements summarize allowed-on-charge percentages from recent reimbursement data. Use them to compare expected reimbursement by payer, employer, group, prefix, or care category when planning financial expectations.",
-    endpoints: [
-      {
-        method: "POST",
-        path: "/reimbursements/aggregate",
-        title: "Create reimbursement aggregation",
-        description: "Aggregates reimbursement data from the last year. Requires reimbursement access.",
-        query: [],
-        request: `{
-  "prefixId": 12,
-  "groupId": 34,
-  "employerId": 78,
-  "payerId": 56
-}`,
-        response: responseReimbursement,
-      },
-    ],
-    fieldSections: [
-      {
-        title: "Create request fields",
-        description: "Use the filters that match the reimbursement segment you want to analyze.",
-        fields: [
-          { name: "prefixId", description: "Optional reimbursement prefix filter." },
-          { name: "groupId", description: "Optional reimbursement group filter." },
-          { name: "employerId", description: "Optional employer filter." },
-          { name: "payerId", description: "Optional payer filter." },
-        ],
-      },
-      {
-        title: "Response fields",
-        description: "Percent fields are returned only when data exists for that category.",
-        fields: [
-          { name: "reimbursement_aggregation.id", description: "Stored aggregation ID." },
-          { name: "dtx / rtc / php / iop / op", description: "Average allowed-on-charge percentages by care category." },
-          { name: "average", description: "Average across returned reimbursement categories." },
-          { name: "status", description: "Result status: has_data, no_data, or local_allowable." },
-          { name: "created_at", description: "Time the aggregation was stored." },
-        ],
-      },
-    ],
-  },
 ];
 
 const navItems = [
@@ -791,7 +729,6 @@ const navItems = [
   { id: "service-codes", label: "Service Codes" },
   { id: "eligibility", label: "Eligibility" },
   { id: "blanket-vob", label: "Blanket VOB" },
-  { id: "reimbursements", label: "Reimbursements" },
   { id: "pagination", label: "Pagination and errors" },
   { id: "testing", label: "Testing safely" },
 ];
