@@ -292,6 +292,63 @@ const responseInquiry = `{
   }
 }`;
 
+const responseInquiryDetail = `{
+  "inquiry": {
+    "id": "inq_01HZXAMPLE000000000000",
+    "patient_first_name": "JANE",
+    "patient_last_name": "EXAMPLE",
+    "member_id": "QA987654321",
+    "date": "08/10/2026",
+    "status": "complete",
+    "plan_status": "active",
+    "user": { "id": 1001, "name": "API Owner" },
+    "payer": { "id": 1234, "name": "Example Health Plan" },
+    "provider": { "id": 42, "name": "Example Recovery Center" },
+    "coverage": {
+      "remote_id": "remote_example_123",
+      "status": "complete",
+      "payer_name": "Example Health Plan",
+      "patient": {
+        "first_name": "JANE",
+        "last_name": "EXAMPLE",
+        "relationship": "Self",
+        "dob": "1990-05-06T00:00:00.000+0000"
+      },
+      "subscriber": {
+        "first_name": "JANE",
+        "last_name": "EXAMPLE",
+        "member_id": "QA987654321"
+      },
+      "plan": {
+        "status": "active",
+        "coverage_start": "2026-01-01T00:00:00.000+0000",
+        "benefit_groups": [
+          {
+            "name": "Mental Health",
+            "status_details": [
+              { "type": "Status", "status": "Active Coverage" }
+            ],
+            "benefits": [
+              { "type": "Amount", "amount": "Deductible", "network": "In Network", "Value": 500 }
+            ]
+          }
+        ]
+      }
+    },
+    "alerts": [
+      { "id": 12, "message": "Verify benefits before admission", "color": "yellow" }
+    ],
+    "record_updates": [
+      {
+        "field": "memberId",
+        "message": "MemberID 'QA123456789' was entered, but the payer returned 'QA987654321'",
+        "submitted": "QA123456789",
+        "returned": "QA987654321"
+      }
+    ]
+  }
+}`;
+
 const responseInquiryList = `{
   "inquiries": [
     {
@@ -586,7 +643,7 @@ const endpointGroups = [
         description: "Returns one inquiry with coverage details when they are stored.",
         query: [],
         request: null,
-        response: responseInquiry,
+        response: responseInquiryDetail,
       },
     ],
     fieldSections: [
@@ -629,6 +686,13 @@ const endpointGroups = [
           { name: "payer", description: "Payer object with id and name." },
           { name: "provider", description: "Provider object with id and name." },
           { name: "coverage", description: "Readable eligibility result details on get/create responses when stored." },
+          { name: "alerts", description: "Detail responses only. Account alerts that matched the inquiry result." },
+          { name: "alerts[].message", description: "Alert text configured for the account." },
+          { name: "alerts[].color", description: "Alert color configured for display, such as yellow." },
+          { name: "record_updates", description: "Detail responses only. Notes for submitted values that differ from returned coverage details." },
+          { name: "record_updates[].field", description: "Request field that differs, such as memberId, patientBirthDate, or patientName." },
+          { name: "record_updates[].message", description: "Ready-to-display update note for the customer record." },
+          { name: "record_updates[].submitted / record_updates[].returned", description: "Submitted value and returned value for the field." },
           { name: "remote_errors", description: "Eligibility result errors returned with an otherwise stored result." },
         ],
       },
