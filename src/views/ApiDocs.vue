@@ -259,7 +259,6 @@ const responseInquiry = `{
     "payer": { "id": 1234, "name": "Example Health Plan" },
     "provider": { "id": 42, "name": "Example Recovery Center" },
     "coverage": {
-      "remote_id": "remote_example_123",
       "status": "complete",
       "payer_name": "Example Health Plan",
       "patient": {
@@ -305,7 +304,6 @@ const responseInquiryDetail = `{
     "payer": { "id": 1234, "name": "Example Health Plan" },
     "provider": { "id": 42, "name": "Example Recovery Center" },
     "coverage": {
-      "remote_id": "remote_example_123",
       "status": "complete",
       "payer_name": "Example Health Plan",
       "patient": {
@@ -379,7 +377,6 @@ const responseInquiryList = `{
 const responseBlanket = `{
   "blanket_vob": {
     "id": "bvob_01HZXAMPLE0000000000",
-    "remote_id": "remote_discovery_123",
     "patient_first_name": "JANE",
     "patient_last_name": "EXAMPLE",
     "member_id": "QA123456789",
@@ -796,7 +793,6 @@ const endpointGroups = [
         description: "Detail responses include payer-specific plan details when available.",
         fields: [
           { name: "blanket_vob.id", description: "QuickAdmit Blanket VOB ID." },
-          { name: "remote_id", description: "Discovery request ID when available." },
           { name: "patient_first_name / patient_last_name", description: "Patient name stored on the Blanket VOB." },
           { name: "member_id", description: "Member ID found or used for the search." },
           { name: "status", description: "Request status, for example pending, complete, or error." },
