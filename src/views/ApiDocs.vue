@@ -349,6 +349,13 @@ const responseInquiryDetail = `{
   }
 }`;
 
+const responseInquiryUpdate = `{
+  "inquiry": {
+    "id": "inq_01HZXAMPLE000000000000",
+    "is_archived": true
+  }
+}`;
+
 const responseInquiryList = `{
   "inquiries": [
     {
@@ -645,6 +652,17 @@ const endpointGroups = [
         request: null,
         response: responseInquiryDetail,
       },
+      {
+        method: "PATCH",
+        path: "/inquiries/{id}",
+        title: "Update eligibility inquiry",
+        description: "Archives or restores one inquiry for your account.",
+        query: [],
+        request: `{
+  "isArchived": true
+}`,
+        response: responseInquiryUpdate,
+      },
     ],
     fieldSections: [
       {
@@ -674,6 +692,13 @@ const endpointGroups = [
         ],
       },
       {
+        title: "Update request fields",
+        description: "Use PATCH /inquiries/{id} to change the archive state of one inquiry.",
+        fields: [
+          { name: "isArchived", description: "Set true to archive the inquiry, or false to restore it." },
+        ],
+      },
+      {
         title: "Response fields",
         description: "List responses return compact inquiry rows; detail responses include coverage when available.",
         fields: [
@@ -683,6 +708,7 @@ const endpointGroups = [
           { name: "date", description: "Inquiry created date formatted as MM/DD/YYYY." },
           { name: "status", description: "Processing status, for example pending, complete, error, expired, or draft." },
           { name: "plan_status", description: "Eligibility plan status, for example active, inactive, unknown, or unavailable." },
+          { name: "is_archived", description: "Whether the inquiry is archived." },
           { name: "payer", description: "Payer object with id and name." },
           { name: "provider", description: "Provider object with id and name." },
           { name: "coverage", description: "Readable eligibility result details on get/create responses when stored." },
