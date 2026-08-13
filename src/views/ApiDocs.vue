@@ -1207,6 +1207,10 @@ code {
   background: #059669;
 }
 
+.method-patch {
+  background: #b45309;
+}
+
 .query-example {
   align-items: center;
   display: flex;
