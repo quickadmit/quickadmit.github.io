@@ -260,10 +260,6 @@ const errorExample = `{
   "message": "limit must be less than or equal to 100"
 }`;
 
-const responseInquiry = `{
-  "id": "inq_01HZXAMPLE000000000000"
-}`;
-
 const responseInquiryDetail = `{
   "inquiry": {
     "id": "inq_01HZXAMPLE000000000000",
@@ -596,7 +592,7 @@ const endpointGroups = [
         method: "POST",
         path: "/inquiries",
         title: "Create eligibility inquiry",
-        description: "Creates a real-time eligibility inquiry and returns its ID. Use GET /inquiries/{id} to retrieve the stored result.",
+        description: "Creates a real-time eligibility inquiry and returns the created inquiry detail, including the current status and result details when available. Use GET /inquiries/{id} later when you need to refresh the stored result.",
         query: [],
         request: `{
   "providerId": 42,
@@ -610,7 +606,7 @@ const endpointGroups = [
   "asOfDate": "08/10/2026",
   "selectedCombo": 0
 }`,
-        response: responseInquiry,
+        response: responseInquiryDetail,
       },
       {
         method: "GET",
@@ -679,9 +675,8 @@ const endpointGroups = [
       },
       {
         title: "Response fields",
-        description: "Create returns the inquiry ID. List responses return compact inquiry rows; detail responses include coverage when available.",
+        description: "Create and detail responses return the full inquiry object. List responses return compact inquiry rows for history screens.",
         fields: [
-          { name: "id", description: "Created inquiry ID returned by POST /inquiries." },
           { name: "inquiry.id", description: "QuickAdmit inquiry ID." },
           { name: "patient_first_name / patient_last_name", description: "Patient name stored on the inquiry." },
           { name: "member_id", description: "Member ID when available." },
@@ -691,12 +686,12 @@ const endpointGroups = [
           { name: "is_archived", description: "Whether the inquiry is archived." },
           { name: "payer", description: "Payer object with id and name." },
           { name: "provider", description: "Provider object with id and name." },
-          { name: "coverage", description: "Readable eligibility result details on detail responses when stored." },
+          { name: "coverage", description: "Readable eligibility result details when stored." },
           { name: "coverage.patient.relationship", description: "Relationship returned by the payer in the stored coverage result; separate from the submitted subscriberRelationship option id." },
-          { name: "alerts", description: "Detail responses only. Account alerts that matched the inquiry result." },
+          { name: "alerts", description: "Account alerts that matched the inquiry result." },
           { name: "alerts[].message", description: "Alert text configured for the account." },
           { name: "alerts[].color", description: "Alert color configured for display, such as yellow." },
-          { name: "record_updates", description: "Detail responses only. Notes for submitted values that differ from returned coverage details." },
+          { name: "record_updates", description: "Notes for submitted values that differ from returned coverage details." },
           { name: "record_updates[].field", description: "Request field that differs, such as memberId, patientBirthDate, or patientName." },
           { name: "record_updates[].message", description: "Ready-to-display update note for the customer record." },
           { name: "record_updates[].submitted / record_updates[].returned", description: "Submitted value and returned value for the field." },
