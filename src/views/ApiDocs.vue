@@ -181,6 +181,7 @@
           <ul class="check-list">
             <li>Store API keys in a secret manager or encrypted environment variable.</li>
             <li>Use payer schemas to validate required fields before submitting inquiries.</li>
+            <li>Send every calendar-date request field as <code>MM/DD/YYYY</code>, without a time or timezone.</li>
             <li>Handle eligibility result errors returned inside <code>remote_errors</code>.</li>
             <li>Use retries with backoff for temporary <code>429</code> and <code>5xx</code> responses.</li>
           </ul>
@@ -224,6 +225,19 @@ const schemaExample = `{
         "min": "1900-01-01",
         "max": "2026-08-10"
       },
+      "subscriberRelationship": {
+        "name": "subscriberRelationship",
+        "label": "Patient's Relationship to Subscriber",
+        "type": "choice",
+        "allowed": true,
+        "required": true,
+        "multiple": false,
+        "options": [
+          { "id": "18", "name": "Self" },
+          { "id": "01", "name": "Spouse" },
+          { "id": "19", "name": "Child" }
+        ]
+      },
       "serviceType": {
         "name": "serviceType",
         "label": "Service Type",
@@ -247,48 +261,7 @@ const errorExample = `{
 }`;
 
 const responseInquiry = `{
-  "inquiry": {
-    "id": "inq_01HZXAMPLE000000000000",
-    "patient_first_name": "JANE",
-    "patient_last_name": "EXAMPLE",
-    "member_id": "QA123456789",
-    "date": "08/10/2026",
-    "status": "complete",
-    "plan_status": "active",
-    "user": { "id": 1001, "name": "API Owner" },
-    "payer": { "id": 1234, "name": "Example Health Plan" },
-    "provider": { "id": 42, "name": "Example Recovery Center" },
-    "coverage": {
-      "status": "complete",
-      "payer_name": "Example Health Plan",
-      "patient": {
-        "first_name": "JANE",
-        "last_name": "EXAMPLE",
-        "relationship": "Self",
-        "dob": "1990-05-06T00:00:00.000+0000"
-      },
-      "subscriber": {
-        "first_name": "JANE",
-        "last_name": "EXAMPLE",
-        "member_id": "QA123456789"
-      },
-      "plan": {
-        "status": "active",
-        "coverage_start": "2026-01-01T00:00:00.000+0000",
-        "benefit_groups": [
-          {
-            "name": "Mental Health",
-            "status_details": [
-              { "type": "Status", "status": "Active Coverage" }
-            ],
-            "benefits": [
-              { "type": "Amount", "amount": "Deductible", "network": "In Network", "Value": 500 }
-            ]
-          }
-        ]
-      }
-    }
-  }
+  "id": "inq_01HZXAMPLE000000000000"
 }`;
 
 const responseInquiryDetail = `{
@@ -430,6 +403,13 @@ const responseBlanketList = `{
   "limit": 25
 }`;
 
+const responsePatientStates = `{
+  "states": [
+    { "name": "California", "abbreviation": "CA" },
+    { "name": "Texas", "abbreviation": "TX" }
+  ]
+}`;
+
 const responsePayers = `{
   "payers": [
     { "id": 1234, "name": "Example Health Plan" }
@@ -528,7 +508,7 @@ const endpointGroups = [
         method: "GET",
         path: "/payers/{id}",
         title: "Get payer schema",
-        description: "Returns the payer plus the schema used to build POST /inquiries. Read schema.fields for request field definitions and schema.combos for valid required-field combinations.",
+        description: "Returns the payer plus the supported schema fields used to build POST /inquiries. Read schema.fields for request field definitions and schema.combos for valid required-field combinations.",
         query: [],
         request: null,
         response: schemaExample,
@@ -555,7 +535,7 @@ const endpointGroups = [
       },
       {
         title: "Schema fields",
-        description: "Every key under schema.fields is a field name you can send in POST /inquiries when it is allowed by the selected payer.",
+        description: "Every key under schema.fields is a supported field you can send in POST /inquiries. Unsupported and internal provider fields are omitted.",
         fields: [
           { name: "schema.fields.<field>.name", description: "Request key to send, for example memberId or patientBirthDate." },
           { name: "schema.fields.<field>.label", description: "Human-readable label you can show in your form." },
@@ -563,6 +543,7 @@ const endpointGroups = [
           { name: "schema.fields.<field>.required", description: "Whether the payer marks this field as required." },
           { name: "schema.fields.<field>.allowed", description: "Whether this field can be sent for this payer." },
           { name: "schema.fields.<field>.options", description: "Allowed values for choice fields. Send the option id, not the display name." },
+          { name: "schema.fields.subscriberRelationship.options", description: "Relationships supported by this payer. Send the selected option id as subscriberRelationship." },
           { name: "schema.fields.serviceType.options", description: "Service codes available for this payer. Use GET /service-codes for the full supported catalog." },
         ],
       },
@@ -573,6 +554,7 @@ const endpointGroups = [
           { name: "schema.combos", description: "Valid required-field combinations. Each array contains request field names." },
           { name: "schema.combos[0]", description: "If you use the first combo, send selectedCombo: 0 in POST /inquiries." },
           { name: "memberId / patientBirthDate", description: "Example fields from a combo. Send them as top-level inquiry request fields." },
+          { name: "subscriberRelationship", description: "When returned by the payer schema, send one id from schema.fields.subscriberRelationship.options." },
           { name: "serviceType", description: "Send one service code or an array of codes from schema.fields.serviceType.options." },
           { name: "payerId", description: "Use payer.id from this response." },
         ],
@@ -614,18 +596,18 @@ const endpointGroups = [
         method: "POST",
         path: "/inquiries",
         title: "Create eligibility inquiry",
-        description: "Creates a real-time eligibility inquiry. Use the payer schema to select the required fields and service types.",
+        description: "Creates a real-time eligibility inquiry and returns its ID. Use GET /inquiries/{id} to retrieve the stored result.",
         query: [],
         request: `{
   "providerId": 42,
   "payerId": 1234,
   "memberId": "QA123456789",
-  "patientBirthDate": "1990-05-06",
+  "patientBirthDate": "05/06/1990",
   "patientFirstName": "JANE",
   "patientLastName": "EXAMPLE",
   "subscriberRelationship": "18",
   "serviceType": ["MH", "98"],
-  "asOfDate": "2026-08-10T12:00:00Z",
+  "asOfDate": "08/10/2026",
   "selectedCombo": 0
 }`,
         response: responseInquiry,
@@ -669,12 +651,12 @@ const endpointGroups = [
           { name: "providerId", description: "Provider ID returned by GET /providers." },
           { name: "payerId", description: "Payer ID returned by GET /payers." },
           { name: "memberId", description: "Subscriber or member identifier." },
-          { name: "patientBirthDate", description: "Patient date of birth in YYYY-MM-DD format." },
+          { name: "patientBirthDate", description: "Required format: MM/DD/YYYY (date only; no time or timezone)." },
           { name: "patientFirstName", description: "Patient first name when required by the payer schema." },
           { name: "patientLastName", description: "Patient last name when required by the payer schema." },
-          { name: "subscriberRelationship", description: "Relationship code for the patient and subscriber, for example 18 for self." },
+          { name: "subscriberRelationship", description: "Relationship option id from schema.fields.subscriberRelationship.options for the selected payer." },
           { name: "serviceType", description: "Service code or array of codes allowed by the payer schema." },
-          { name: "asOfDate", description: "Eligibility date. Defaults to today when omitted." },
+          { name: "asOfDate", description: "Required format: MM/DD/YYYY (date only; no time or timezone). Defaults to today when omitted." },
           { name: "selectedCombo", description: "Zero-based index from schema.combos matching the fields you send." },
         ],
       },
@@ -697,8 +679,9 @@ const endpointGroups = [
       },
       {
         title: "Response fields",
-        description: "List responses return compact inquiry rows; detail responses include coverage when available.",
+        description: "Create returns the inquiry ID. List responses return compact inquiry rows; detail responses include coverage when available.",
         fields: [
+          { name: "id", description: "Created inquiry ID returned by POST /inquiries." },
           { name: "inquiry.id", description: "QuickAdmit inquiry ID." },
           { name: "patient_first_name / patient_last_name", description: "Patient name stored on the inquiry." },
           { name: "member_id", description: "Member ID when available." },
@@ -708,7 +691,8 @@ const endpointGroups = [
           { name: "is_archived", description: "Whether the inquiry is archived." },
           { name: "payer", description: "Payer object with id and name." },
           { name: "provider", description: "Provider object with id and name." },
-          { name: "coverage", description: "Readable eligibility result details on get/create responses when stored." },
+          { name: "coverage", description: "Readable eligibility result details on detail responses when stored." },
+          { name: "coverage.patient.relationship", description: "Relationship returned by the payer in the stored coverage result; separate from the submitted subscriberRelationship option id." },
           { name: "alerts", description: "Detail responses only. Account alerts that matched the inquiry result." },
           { name: "alerts[].message", description: "Alert text configured for the account." },
           { name: "alerts[].color", description: "Alert color configured for display, such as yellow." },
@@ -734,7 +718,7 @@ const endpointGroups = [
         query: [],
         request: `{
   "providerId": 42,
-  "patientStateId": "8550",
+  "patientState": "CA",
   "patientFirstName": "JANE",
   "patientLastName": "EXAMPLE",
   "patientDOB": "05/06/1990",
@@ -742,6 +726,15 @@ const endpointGroups = [
   "doS_EndDate": "08/10/2026"
 }`,
         response: responseBlanket,
+      },
+      {
+        method: "GET",
+        path: "/blanket-vobs/patient-states",
+        title: "List patient states",
+        description: "Returns the state names and abbreviations accepted by Blanket VOB create requests.",
+        query: [],
+        request: null,
+        response: responsePatientStates,
       },
       {
         method: "GET",
@@ -769,13 +762,21 @@ const endpointGroups = [
         description: "Use synthetic test patients when building locally or sharing examples.",
         fields: [
           { name: "providerId", description: "Provider ID returned by GET /providers." },
-          { name: "patientStateId", description: "Patient state ID used for discovery." },
+          { name: "patientState", description: "Two-letter abbreviation returned by GET /blanket-vobs/patient-states." },
           { name: "patientFirstName", description: "Patient first name." },
           { name: "patientLastName", description: "Patient last name." },
-          { name: "patientDOB", description: "Patient date of birth in MM/DD/YYYY format." },
-          { name: "doS_StartDate", description: "Date-of-service start date in MM/DD/YYYY format." },
-          { name: "doS_EndDate", description: "Date-of-service end date in MM/DD/YYYY format." },
+          { name: "patientDOB", description: "Required format: MM/DD/YYYY (date only; no time or timezone)." },
+          { name: "doS_StartDate", description: "Required format: MM/DD/YYYY (date only; no time or timezone)." },
+          { name: "doS_EndDate", description: "Required format: MM/DD/YYYY (date only; no time or timezone)." },
           { name: "patientSSN", description: "Optional patient SSN when required for discovery." },
+        ],
+      },
+      {
+        title: "Patient state response fields",
+        description: "Use the abbreviation in a Blanket VOB create request. Internal PVerify state IDs are not exposed.",
+        fields: [
+          { name: "states[].name", description: "Human-readable state name." },
+          { name: "states[].abbreviation", description: "Two-letter value to send as patientState." },
         ],
       },
       {
