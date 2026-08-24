@@ -709,7 +709,7 @@ const endpointGroups = [
         method: "POST",
         path: "/blanket-vobs",
         title: "Create Blanket VOB",
-        description: "Runs insurance discovery using patient demographics. Requires Blanket VOB access.",
+        description: "Runs a Blanket VOB search using patient demographics. Requires Blanket VOB access.",
         query: [],
         request: `{
   "providerId": 42,
