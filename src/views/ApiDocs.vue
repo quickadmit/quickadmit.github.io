@@ -735,7 +735,7 @@ const endpointGroups = [
         method: "GET",
         path: "/blanket-vobs",
         title: "List Blanket VOBs",
-        description: "Returns stored Blanket VOB discovery searches. The example filters by member and payer.",
+        description: "Returns stored Blanket VOB searches. The example filters by member and payer.",
         query: ["memberId", "payerId", "page", "limit"],
         queryExample: "/blanket-vobs?memberId=QA123456789&payerId=1234&page=1&limit=25",
         request: null,
