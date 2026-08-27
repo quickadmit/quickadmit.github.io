@@ -763,12 +763,12 @@ const endpointGroups = [
           { name: "patientDOB", description: "Required format: MM/DD/YYYY (date only; no time or timezone)." },
           { name: "doS_StartDate", description: "Required format: MM/DD/YYYY (date only; no time or timezone)." },
           { name: "doS_EndDate", description: "Required format: MM/DD/YYYY (date only; no time or timezone)." },
-          { name: "patientSSN", description: "Optional patient SSN when required for discovery." },
+          { name: "patientSSN", description: "Optional patient SSN when available." },
         ],
       },
       {
         title: "Patient state response fields",
-        description: "Use the abbreviation in a Blanket VOB create request. Internal PVerify state IDs are not exposed.",
+        description: "Use the abbreviation in a Blanket VOB create request.",
         fields: [
           { name: "states[].name", description: "Human-readable state name." },
           { name: "states[].abbreviation", description: "Two-letter value to send as patientState." },
