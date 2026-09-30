@@ -263,9 +263,9 @@ const errorExample = `{
 const responseInquiryDetail = `{
   "inquiry": {
     "id": "inq_01HZXAMPLE000000000000",
-    "patient_first_name": "JANE",
-    "patient_last_name": "EXAMPLE",
-    "member_id": "QA987654321",
+    "patient_first_name": "John",
+    "patient_last_name": "Smith",
+    "member_id": "QA123456789",
     "date": "08/10/2026",
     "status": "complete",
     "plan_status": "active",
@@ -276,15 +276,15 @@ const responseInquiryDetail = `{
       "status": "complete",
       "payer_name": "Example Health Plan",
       "patient": {
-        "first_name": "JANE",
-        "last_name": "EXAMPLE",
+        "first_name": "John",
+        "last_name": "Smith",
         "relationship": "Self",
-        "dob": "1990-05-06T00:00:00.000+0000"
+        "dob": "1997-05-23T00:00:00.000+0000"
       },
       "subscriber": {
-        "first_name": "JANE",
-        "last_name": "EXAMPLE",
-        "member_id": "QA987654321"
+        "first_name": "John",
+        "last_name": "Smith",
+        "member_id": "QA123456789"
       },
       "plan": {
         "status": "active",
@@ -307,10 +307,10 @@ const responseInquiryDetail = `{
     ],
     "record_updates": [
       {
-        "field": "memberId",
-        "message": "MemberID 'QA123456789' was entered, but the payer returned 'QA987654321'",
-        "submitted": "QA123456789",
-        "returned": "QA987654321"
+        "field": "patientBirthDate",
+        "message": "Date of birth '05/23/1997' was normalized to '1997-05-23'",
+        "submitted": "05/23/1997",
+        "returned": "1997-05-23"
       }
     ]
   }
@@ -327,8 +327,8 @@ const responseInquiryList = `{
   "inquiries": [
     {
       "id": "inq_01HZXAMPLE000000000000",
-      "patient_first_name": "JANE",
-      "patient_last_name": "EXAMPLE",
+      "patient_first_name": "John",
+      "patient_last_name": "Smith",
       "user": { "id": 1001, "name": "API Owner" },
       "payer": { "id": 1234, "name": "Example Health Plan" },
       "provider": { "id": 42, "name": "Example Recovery Center" },
@@ -346,10 +346,10 @@ const responseInquiryList = `{
 const responseBlanket = `{
   "blanket_vob": {
     "id": "bvob_01HZXAMPLE0000000000",
-    "patient_first_name": "JANE",
-    "patient_last_name": "EXAMPLE",
+    "patient_first_name": "John",
+    "patient_last_name": "Smith",
     "member_id": "QA123456789",
-    "dob": "05/06/1990",
+    "dob": "05/23/1997",
     "date": "08/10/2026",
     "status": "complete",
     "user": { "id": 1001, "name": "API Owner" },
@@ -381,8 +381,8 @@ const responseBlanketList = `{
   "blanket_vobs": [
     {
       "id": "bvob_01HZXAMPLE0000000000",
-      "patient_first_name": "JANE",
-      "patient_last_name": "EXAMPLE",
+      "patient_first_name": "John",
+      "patient_last_name": "Smith",
       "member_id": "QA123456789",
       "user": { "id": 1001, "name": "API Owner" },
       "provider": { "id": 42, "name": "Example Recovery Center" },
@@ -598,9 +598,9 @@ const endpointGroups = [
   "providerId": 42,
   "payerId": 1234,
   "memberId": "QA123456789",
-  "patientBirthDate": "05/06/1990",
-  "patientFirstName": "JANE",
-  "patientLastName": "EXAMPLE",
+  "patientBirthDate": "05/23/1997",
+  "patientFirstName": "John",
+  "patientLastName": "Smith",
   "subscriberRelationship": "18",
   "serviceType": ["MH", "98"],
   "asOfDate": "08/10/2026",
@@ -714,9 +714,9 @@ const endpointGroups = [
         request: `{
   "providerId": 42,
   "patientState": "CA",
-  "patientFirstName": "JANE",
-  "patientLastName": "EXAMPLE",
-  "patientDOB": "05/06/1990",
+  "patientFirstName": "John",
+  "patientLastName": "Smith",
+  "patientDOB": "05/23/1997",
   "doS_StartDate": "08/10/2026",
   "doS_EndDate": "08/10/2026"
 }`,
@@ -1360,5 +1360,326 @@ code {
   .field-list div {
     grid-template-columns: 1fr;
   }
+}
+</style>
+
+<style scoped>
+/* Lovable landing-page design system overrides */
+.api-docs-page {
+  min-height: 100vh;
+  background: var(--qa-background);
+  color: var(--qa-ink);
+}
+
+.docs-shell {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 36px;
+  width: min(1480px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 52px 0 96px;
+}
+
+.docs-sidebar {
+  position: sticky;
+  top: 98px;
+  align-self: start;
+  max-height: calc(100vh - 122px);
+  overflow-y: auto;
+  padding: 18px;
+  border: 1px solid var(--qa-border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .86);
+  box-shadow: var(--qa-shadow-card);
+  backdrop-filter: blur(16px);
+}
+
+.sidebar-title {
+  margin-bottom: 12px;
+  padding: 0 10px 12px;
+  border-bottom: 1px solid var(--qa-border);
+  color: var(--qa-ink);
+  font-family: var(--qa-heading-font);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.docs-sidebar a {
+  display: block;
+  margin: 3px 0;
+  padding: 9px 10px;
+  border-radius: 9px;
+  color: var(--qa-muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.docs-sidebar a:hover,
+.docs-sidebar a.active {
+  color: var(--qa-primary);
+  background: var(--qa-primary-soft);
+}
+
+.docs-content {
+  min-width: 0;
+  width: 100%;
+}
+
+.docs-header {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 24px;
+  padding: 54px;
+  border: 1px solid var(--qa-border);
+  border-radius: 24px;
+  background: var(--qa-hero-gradient);
+  box-shadow: var(--qa-shadow-card);
+}
+
+.docs-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .22;
+  background-image: radial-gradient(circle at 1px 1px, rgba(124, 77, 222, .25) 1px, transparent 0);
+  background-size: 25px 25px;
+  pointer-events: none;
+}
+
+.docs-header-content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(220px, .7fr);
+  align-items: center;
+  gap: 32px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  padding: 7px 11px;
+  border-radius: 999px;
+  color: var(--qa-primary);
+  background: var(--qa-primary-soft);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.docs-header h1 {
+  margin: 18px 0 14px;
+  color: var(--qa-ink);
+  font-family: var(--qa-heading-font);
+  font-size: clamp(42px, 6vw, 64px);
+  line-height: 1;
+  letter-spacing: -.05em;
+}
+
+.docs-header p {
+  margin: 0;
+  color: var(--qa-muted);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.docs-header-visual {
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, .75);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .65);
+  box-shadow: var(--qa-shadow-float);
+  transform: rotate(2deg);
+}
+
+.docs-header-visual img {
+  display: block;
+  width: 100%;
+  border-radius: 12px;
+}
+
+.doc-section {
+  scroll-margin-top: 90px;
+  margin: 24px 0 0;
+  padding: 38px;
+  border: 1px solid var(--qa-border);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: var(--qa-shadow-card);
+}
+
+.doc-section h2,
+.doc-section h3,
+.doc-section h4 {
+  color: var(--qa-ink);
+  font-family: var(--qa-heading-font);
+}
+
+.doc-section h2 {
+  margin: 0 0 14px;
+  font-size: 30px;
+  letter-spacing: -.035em;
+}
+
+.doc-section h3 { font-size: 18px; }
+.doc-section h4 { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.doc-section > p,
+.section-heading p,
+.endpoint-block > p,
+.field-panel > p,
+.two-column p {
+  color: var(--qa-muted);
+  line-height: 1.75;
+}
+
+.step-grid,
+.two-column,
+.field-section-grid,
+.endpoint-examples {
+  display: grid;
+  gap: 14px;
+}
+
+.step-grid { grid-template-columns: repeat(3, 1fr); margin: 28px 0; }
+.step-item {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 11px;
+  padding: 16px;
+  border: 1px solid var(--qa-border);
+  border-radius: 13px;
+  background: #fff;
+}
+.step-item > span {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--qa-primary);
+  font-size: 11px;
+  font-weight: 800;
+}
+.step-item h3 { margin: 3px 0 6px; font-size: 13px; }
+.step-item p { margin: 0; color: var(--qa-muted); font-size: 12px; line-height: 1.55; }
+
+.info-table,
+.field-panel,
+.testing-callout {
+  overflow: hidden;
+  border: 1px solid var(--qa-border);
+  border-radius: 14px;
+  background: #fcfbfd;
+}
+.info-table > div {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 18px;
+  padding: 17px 19px;
+  border-bottom: 1px solid var(--qa-border);
+}
+.info-table > div:last-child { border-bottom: 0; }
+.info-table strong { font-family: var(--qa-heading-font); font-size: 13px; }
+.info-table span { color: var(--qa-muted); }
+
+.endpoint-block {
+  margin-top: 24px;
+  padding: 26px;
+  border: 1px solid var(--qa-border);
+  border-radius: 16px;
+  background: #fff;
+}
+.endpoint-header { display: flex; align-items: center; gap: 10px; }
+.method-badge {
+  padding: 6px 9px;
+  border-radius: 7px;
+  font-family: var(--qa-heading-font);
+  font-size: 10px;
+  font-weight: 800;
+}
+.method-get { color: #17744a; background: #e9f8f0; }
+.method-post { color: #6740b5; background: var(--qa-primary-soft); }
+.method-put,
+.method-patch { color: #916513; background: #fff7df; }
+.method-delete { color: #a23d3d; background: #fff0f0; }
+.endpoint-header code { color: var(--qa-ink); font-size: 13px; font-weight: 700; }
+.endpoint-block > h3 { margin: 20px 0 8px; font-size: 19px; }
+.query-example { margin: 18px 0; padding: 13px; border-radius: 10px; background: var(--qa-primary-soft); }
+.query-example strong { margin-right: 10px; color: var(--qa-primary); }
+.endpoint-examples { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 20px; }
+.endpoint-examples.single-example { grid-template-columns: 1fr; }
+.endpoint-examples > div:last-child .code-block {
+  overflow-x: hidden;
+  white-space: pre-wrap;
+}
+.endpoint-examples > div:last-child .code-block code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+#providers .endpoint-block {
+  margin-top: 18px;
+  padding: 18px 0 26px;
+  border: 0;
+  border-bottom: 1px solid var(--qa-border);
+  border-radius: 0;
+  background: transparent;
+}
+#providers .endpoint-block:last-of-type {
+  padding-bottom: 8px;
+  border-bottom: 0;
+}
+#providers .endpoint-block > h3 { margin-top: 16px; }
+#providers .query-example { margin: 14px 0; }
+#providers .endpoint-examples { margin-top: 16px; }
+
+.code-block {
+  margin: 14px 0 0;
+  padding: 20px;
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, .06);
+  border-radius: 13px;
+  color: #d9d4df;
+  background: #302e34;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.field-section-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 24px; }
+.field-panel { padding: 22px; }
+.field-panel h3 { margin: 0 0 12px; }
+.field-list > div { display: grid; grid-template-columns: minmax(110px, .7fr) 1.3fr; gap: 12px; padding: 12px 0; border-top: 1px solid var(--qa-border); }
+.field-list code { color: var(--qa-primary); font-weight: 700; }
+.field-list span { color: var(--qa-muted); font-size: 12px; line-height: 1.55; }
+.two-column { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.testing-callout { display: flex; gap: 18px; margin: 22px 0; padding: 18px; border-color: #dfd1ff; background: var(--qa-primary-soft); }
+.testing-callout strong { color: var(--qa-primary); }
+.testing-callout span { color: #674d8b; }
+.check-list { padding-left: 20px; color: var(--qa-muted); line-height: 1.8; }
+
+@media (max-width: 980px) {
+  .docs-shell { grid-template-columns: 1fr; gap: 20px; width: calc(100% - 32px); padding-top: 26px; }
+  .docs-sidebar { position: static; display: flex; gap: 5px; max-height: none; overflow-x: auto; white-space: nowrap; }
+  .sidebar-title { display: none; }
+  .docs-sidebar a { flex: none; }
+}
+
+@media (max-width: 680px) {
+  .docs-header { padding: 34px 24px; border-radius: 18px; }
+  .docs-header-content { grid-template-columns: 1fr; }
+  .docs-header-visual { display: none; }
+  .doc-section { padding: 25px 20px; border-radius: 16px; }
+  .step-grid,
+  .endpoint-examples,
+  .field-section-grid,
+  .two-column { grid-template-columns: 1fr; }
+  .info-table > div { grid-template-columns: 1fr; gap: 7px; }
+  .field-list > div { grid-template-columns: 1fr; gap: 5px; }
+  .endpoint-block { padding: 20px 16px; }
+  .endpoint-header { align-items: flex-start; flex-direction: column; }
+  .endpoint-header code { overflow-wrap: anywhere; }
 }
 </style>

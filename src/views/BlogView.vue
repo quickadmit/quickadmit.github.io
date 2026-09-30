@@ -1,378 +1,76 @@
 <template>
   <div class="blog-page">
+    <header class="blog-hero">
+      <h1>Ideas for a faster, more resilient intake team.</h1>
+    </header>
 
-    <!-- LOCK WRAPPER -->
-    <div class="blog-lock-wrapper">
-
-      <!-- ========================= -->
-      <!-- ACTUAL BLOG CONTENT (BLURRED) -->
-      <!-- ========================= -->
-      <div class="blog-content-wrapper">
-
-        <!-- HERO -->
-        <header class="blog-hero reveal" :class="{ 'is-visible': heroVisible }" ref="hero">
-          <div class="container has-text-centered">
-            <h1 class="blog-title">
-              Insights & Resources
-            </h1>
-            <p class="blog-subtitle">
-              Operational intelligence, compliance updates, and revenue insights
-              for modern healthcare facilities.
-            </p>
+    <main class="article-list" aria-label="QuickAdmit articles">
+      <article v-for="(article, index) in articles" :key="article.slug" class="article-card" :class="{ featured: index === 0 }">
+        <router-link :to="`/blog/${article.slug}`" class="article-image-link" :aria-label="`Read ${article.title}`">
+          <img :src="article.image" :alt="article.imageAlt" />
+          <span class="image-arrow"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+        </router-link>
+        <div class="article-copy">
+          <div class="article-meta">
+            <span>{{ article.category }}</span>
+            <span>{{ article.readTime }}</span>
           </div>
-        </header>
-
-        <!-- FEATURED POST -->
-        <section class="section">
-          <div class="container reveal" :class="{ 'is-visible': featuredVisible }" ref="featured">
-            <div class="featured-card columns is-vcentered">
-
-              <div class="column is-6">
-                <img src="https://images.unsplash.com/photo-1580281657527-47b7d16f78f1" class="featured-img" />
-              </div>
-
-              <div class="column is-6">
-                <span class="blog-badge">Featured</span>
-                <h2 class="featured-title">
-                  Improving Admissions Efficiency in Behavioral Health Facilities
-                </h2>
-                <p class="featured-excerpt">
-                  Learn how automation and intelligent verification workflows
-                  reduce administrative friction and improve patient intake speed.
-                </p>
-                <button class="qa-button mt-4">
-                  Read Article
-                </button>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        <!-- BLOG GRID -->
-        <section class="section">
-          <div class="container reveal" :class="{ 'is-visible': gridVisible }" ref="grid">
-            <div class="columns is-multiline">
-
-              <div class="column is-4" v-for="(post, index) in posts" :key="index">
-                <div class="blog-card">
-
-                  <img :src="post.image" class="blog-img" />
-
-                  <div class="blog-content">
-                    <span class="blog-category">
-                      {{ post.category }}
-                    </span>
-                    <h3 class="blog-card-title">
-                      {{ post.title }}
-                    </h3>
-                    <p class="blog-card-excerpt">
-                      {{ post.excerpt }}
-                    </p>
-                    <a class="read-link">Read More →</a>
-                  </div>
-
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-      </div>
-
-      <!-- ========================= -->
-      <!-- COMING SOON OVERLAY -->
-      <!-- ========================= -->
-      <div class="coming-overlay">
-        <div class="coming-card">
-          <h2>Insights Center Launching Soon</h2>
-          <p>
-            We are preparing educational resources, compliance updates,
-            and operational insights designed specifically for healthcare leaders.
-          </p>
+          <h2><router-link :to="`/blog/${article.slug}`">{{ article.title }}</router-link></h2>
+          <p>{{ article.excerpt }}</p>
+          <router-link :to="`/blog/${article.slug}`" class="read-link">Read article <i class="fas fa-arrow-right" aria-hidden="true"></i></router-link>
         </div>
-      </div>
+      </article>
+    </main>
 
-    </div>
+    <section class="blog-cta">
+      <div>
+        <span class="eyebrow">See it in practice</span>
+        <h2>Bring faster coverage answers into every intake shift.</h2>
+      </div>
+      <router-link to="/book">Request a demo <i class="fas fa-arrow-right" aria-hidden="true"></i></router-link>
+    </section>
   </div>
 </template>
 
 <script>
+import { blogArticles } from "../blogArticles";
+
 export default {
   name: "BlogView",
   data() {
-    return {
-      heroVisible: false,
-      featuredVisible: false,
-      gridVisible: false,
-      posts: [
-        {
-          title: "Understanding Expected Insurance Value (EIV)",
-          category: "Revenue Optimization",
-          excerpt:
-            "How predictive reimbursement tools improve financial forecasting before admission.",
-          image:
-            "https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0"
-        },
-        {
-          title: "HIPAA Compliance in Digital Admissions",
-          category: "Compliance",
-          excerpt:
-            "Best practices for protecting PHI during intake and verification processes.",
-          image:
-            "https://images.unsplash.com/photo-1584433144859-1fc3ab64a957"
-        },
-        {
-          title: "Reducing Intake Delays with Automated VOB",
-          category: "Operations",
-          excerpt:
-            "Why modern facilities are replacing manual verification workflows.",
-          image:
-            "https://images.unsplash.com/photo-1579154204601-01588f351e67"
-        }
-      ]
-    };
+    return { articles: blogArticles };
   },
-  mounted() {
-    this.initObserver();
-  },
-  methods: {
-    initObserver() {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              if (entry.target === this.$refs.hero)
-                this.heroVisible = true;
-              if (entry.target === this.$refs.featured)
-                this.featuredVisible = true;
-              if (entry.target === this.$refs.grid)
-                this.gridVisible = true;
-            }
-          });
-        },
-        { threshold: 0.2 }
-      );
-
-      observer.observe(this.$refs.hero);
-      observer.observe(this.$refs.featured);
-      observer.observe(this.$refs.grid);
-    }
-  }
 };
 </script>
 
 <style scoped>
-/* ========================= */
-/* HERO */
-/* ========================= */
-.blog-hero {
-  background: linear-gradient(135deg, #0B0C14 0%, #1A1735 45%, #6A4DFF 100%);
-  padding: 5rem 1rem;
-  color: #FFFFFF;
-  position: relative;
-  overflow: hidden;
-}
-
-.blog-hero ::after {
-  content: "";
-  position: absolute;
-  width: 520px;
-  height: 520px;
-  background: radial-gradient(circle, rgba(123, 92, 255, 0.28), transparent 70%);
-  top: -160px;
-  right: -160px;
-  filter: blur(8px);
-}
-
-.blog-title {
-  font-size: 3rem;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-}
-
-.blog-subtitle {
-  font-size: 1.15rem;
-  color: #DCE6FF;
-  max-width: 650px;
-  margin: 0 auto;
-  line-height: 1.7;
-}
-
-/* ========================= */
-/* FEATURED */
-/* ========================= */
-.featured-card {
-  background: #FFFFFF;
-  border-radius: 20px;
-  border: 1px solid #E6EDF7;
-  box-shadow:
-    0 12px 30px rgba(15, 30, 60, 0.06),
-    0 4px 10px rgba(15, 30, 60, 0.04);
-  padding: 2rem;
-}
-
-.featured-img {
-  border-radius: 14px;
-  width: 100%;
-}
-
-.blog-badge {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #3E6EDC;
-  text-transform: uppercase;
-}
-
-.featured-title {
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-top: 1rem;
-  color: #0F1F3D;
-}
-
-.featured-excerpt {
-  margin-top: 1rem;
-  color: #4B5B73;
-  line-height: 1.7;
-}
-
-/* ========================= */
-/* BLOG GRID */
-/* ========================= */
-.blog-card {
-  background: #FFFFFF;
-  border-radius: 18px;
-  border: 1px solid #E6EDF7;
-  overflow: hidden;
-  transition: all 0.35s ease;
-  box-shadow: 0 8px 20px rgba(15, 30, 60, 0.05);
-}
-
-.blog-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 40px rgba(15, 30, 60, 0.10);
-}
-
-.blog-img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.blog-content {
-  padding: 1.5rem;
-}
-
-.blog-category {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #3E6EDC;
-  text-transform: uppercase;
-}
-
-.blog-card-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-top: 0.5rem;
-  color: #0F1F3D;
-}
-
-.blog-card-excerpt {
-  font-size: 0.95rem;
-  color: #5C6F89;
-  margin-top: 0.7rem;
-  line-height: 1.6;
-}
-
-.read-link {
-  display: inline-block;
-  margin-top: 1rem;
-  font-weight: 600;
-  color: #2C5ACF;
-  cursor: pointer;
-}
-
-/* ========================= */
-/* BUTTON */
-/* ========================= */
-.qa-button {
-  background: linear-gradient(135deg, #2C5ACF, #3E6EDC);
-  color: #FFFFFF;
-  border: none;
-  padding: 0.75rem 2rem;
-  border-radius: 999px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.qa-button:hover {
-  transform: translateY(-2px);
-}
-
-/* ========================= */
-/* REVEAL */
-/* ========================= */
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ========================= */
-/* BLUR + OVERLAY */
-/* ========================= */
-.blog-lock-wrapper {
-  position: relative;
-}
-
-.blog-content-wrapper {
-  filter: blur(6px);
-  pointer-events: none;
-  user-select: none;
-  opacity: 0.7;
-}
-
-.coming-overlay {
-  position: fixed;
-  top: 70px;
-  /* height of navbar */
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(10, 26, 47, 0.65);
-  backdrop-filter: blur(6px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.coming-card {
-  background: rgba(255, 255, 255, 0.96);
-  padding: 3rem;
-  border-radius: 20px;
-  text-align: center;
-  max-width: 520px;
-  border: 1px solid #E6EDF7;
-  box-shadow: 0 20px 50px rgba(15, 30, 60, 0.15);
-}
-
-.coming-card h2 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #0F1F3D;
-  margin-bottom: 1rem;
-}
-
-.coming-card p {
-  color: #5C6F89;
-  line-height: 1.7;
-}
+.blog-page { overflow: hidden; background: var(--qa-background); }
+.blog-hero { position: relative; padding: 72px 32px 64px; border-bottom: 1px solid var(--qa-border); text-align: center; }
+.blog-hero::before { position: absolute; inset: 0; background: radial-gradient(circle at 28% 10%, rgba(124,77,222,.12), transparent 27%), radial-gradient(circle at 76% 55%, rgba(71,204,126,.1), transparent 24%); content: ""; pointer-events: none; }
+.blog-hero > * { position: relative; z-index: 1; }
+.eyebrow { display: inline-block; margin-bottom: 14px; color: var(--qa-primary); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.blog-hero h1, .article-copy h2, .blog-cta h2 { margin: 0; color: var(--qa-ink); font-family: var(--qa-heading-font); font-weight: 750; letter-spacing: -.045em; }
+.blog-hero h1 { max-width: 900px; margin: 0 auto; font-size: clamp(46px, 5.5vw, 72px); line-height: 1.04; }
+.article-list { display: grid; width: min(1216px, calc(100% - 64px)); grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin: 60px auto 112px; }
+.article-card { overflow: hidden; border: 1px solid var(--qa-border); border-radius: 20px; background: white; box-shadow: var(--qa-shadow-card); transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.article-card:hover { border-color: rgba(124,77,222,.26); box-shadow: var(--qa-shadow-float); transform: translateY(-5px); }
+.article-card.featured { display: grid; grid-column: 1 / -1; grid-template-columns: 1.12fr .88fr; }
+.article-image-link { position: relative; display: block; min-height: 260px; overflow: hidden; background: var(--qa-primary-soft); }
+.article-card.featured .article-image-link { min-height: 420px; }
+.article-image-link img { display: block; width: 100%; height: 100%; transition: transform .55s ease; object-fit: cover; }
+.article-card:hover .article-image-link img { transform: scale(1.035); }
+.image-arrow { position: absolute; right: 18px; bottom: 18px; display: grid; width: 43px; height: 43px; place-items: center; border: 1px solid rgba(255,255,255,.7); border-radius: 12px; background: rgba(255,255,255,.88); box-shadow: var(--qa-shadow-card); color: var(--qa-primary); backdrop-filter: blur(10px); }
+.article-copy { padding: 30px; }
+.article-card.featured .article-copy { display: flex; justify-content: center; flex-direction: column; padding: 46px; }
+.article-meta { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 18px; color: var(--qa-muted); font-size: 11px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+.article-meta span:first-child { color: var(--qa-primary); }
+.article-copy h2 { font-size: clamp(25px, 3vw, 37px); line-height: 1.18; }.article-card:not(.featured) .article-copy h2 { font-size: 27px; }
+.article-copy h2 a { color: inherit; text-decoration: none; }
+.article-copy > p { margin: 18px 0 22px; color: var(--qa-muted); font-size: 15px; line-height: 1.75; }
+.read-link { display: inline-flex; align-items: center; gap: 9px; color: var(--qa-primary); font-size: 14px; font-weight: 800; text-decoration: none; }.read-link i { font-size: 11px; transition: transform .2s ease; }.read-link:hover i { transform: translateX(4px); }
+.blog-cta { display: flex; width: min(1216px, calc(100% - 64px)); align-items: center; justify-content: space-between; gap: 34px; margin: 0 auto 92px; padding: 44px 48px; border-radius: 22px; background: linear-gradient(135deg, #2f253c, #4a3569); box-shadow: var(--qa-shadow-float); }
+.blog-cta .eyebrow { color: #bcffda; }.blog-cta h2 { max-width: 720px; color: white; font-size: clamp(28px, 3.4vw, 43px); line-height: 1.15; }
+.blog-cta > a { display: inline-flex; min-height: 48px; flex: none; align-items: center; gap: 10px; padding: 0 20px; border-radius: 12px; background: white; color: var(--qa-primary); font-size: 14px; font-weight: 800; text-decoration: none; }
+@media (max-width: 860px) { .article-list { grid-template-columns: 1fr; }.article-card.featured { display: block; grid-column: auto; }.article-card.featured .article-image-link { min-height: 320px; }.article-card.featured .article-copy { padding: 30px; }.blog-cta { align-items: flex-start; flex-direction: column; } }
+@media (max-width: 620px) { .blog-hero { padding: 52px 20px 48px; }.blog-hero h1 { font-size: 42px; }.article-list { width: calc(100% - 40px); gap: 20px; margin: 42px auto 76px; }.article-card.featured .article-image-link, .article-image-link { min-height: 230px; }.article-copy, .article-card.featured .article-copy { padding: 24px 20px; }.article-copy h2, .article-card:not(.featured) .article-copy h2 { font-size: 25px; }.blog-cta { width: calc(100% - 40px); margin-bottom: 68px; padding: 32px 24px; }.blog-cta > a { width: 100%; justify-content: center; } }
 </style>

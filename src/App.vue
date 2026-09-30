@@ -3,9 +3,11 @@
     <NavbarComponent />
 
     <main class="main-content">
-      <transition name="fade" mode="out-in">
-        <router-view />
-      </transition>
+      <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </main>
     <FooterComponent />
   </div>
@@ -25,40 +27,61 @@ export default {
 </script>
 
 <style>
-/* 1. CORE PALETTE & FOUNDATION */
-:root {
-  --primary-purple: #7B5CFF;
-  --primary-purple-hover: #6847F5;
-  --deep-charcoal: #0F0F14;
-  --soft-off-white: #F6F7FB;
-  /* Main Page Background */
-  --white: #FFFFFF;
-  --border-color: #E6E8F0;
-
-  /* Text Colors */
-  --text-primary: #1C1D2A;
-  --text-secondary: #6B6F85;
-  --text-muted: #9AA0B5;
+:root:root {
+  color-scheme: light;
+  --qa-primary: oklch(55% .19 293);
+  --qa-primary-hover: oklch(50% .19 293);
+  --qa-primary-soft: oklch(95% .03 295);
+  --qa-background: oklch(99% .004 290);
+  --qa-ink: oklch(24% .02 285);
+  --qa-dark: oklch(25% .015 285);
+  --qa-muted: oklch(50% .02 285);
+  --qa-ink-muted: oklch(70% .02 290);
+  --qa-muted-surface: oklch(95.5% .008 290);
+  --qa-border: oklch(91% .01 290);
+  --qa-brand-gradient: linear-gradient(135deg, oklch(55% .19 293), oklch(66% .17 300));
+  --qa-hero-gradient: radial-gradient(60% 60% at 80% 10%, oklch(90% .06 295 / .8), transparent 70%), radial-gradient(40% 40% at 10% 90%, oklch(93% .04 300 / .9), transparent 70%);
+  --qa-shadow-card: 0 1px 2px oklch(25% .02 285 / .04), 0 12px 32px -12px oklch(25% .02 285 / .12);
+  --qa-shadow-float: 0 24px 60px -20px oklch(40% .15 293 / .35);
+  --qa-shadow-glow: 0 0 0 1px oklch(55% .19 293 / .15), 0 10px 30px -10px oklch(55% .19 293 / .5);
+  --qa-heading-font: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --bulma-body-background-color: var(--qa-background);
+  --bulma-body-color: var(--qa-ink);
+  --bulma-body-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --bulma-link-text: var(--qa-primary);
+  --bulma-strong-color: var(--qa-ink);
+  --bulma-text: var(--qa-muted);
+  --bulma-text-strong: var(--qa-ink);
+  --primary-purple: var(--qa-primary);
+  --primary-purple-hover: var(--qa-primary-hover);
+  --deep-charcoal: var(--qa-ink);
+  --soft-off-white: var(--qa-background);
+  --white: #fff;
+  --border-color: var(--qa-border);
+  --text-primary: var(--qa-ink);
+  --text-secondary: var(--qa-muted);
+  --text-muted: var(--qa-ink-muted);
 }
 
-/* 4. TYPOGRAPHY (Inter / Roboto) */
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
-  background-color: var(--soft-off-white);
-  color: var(--text-primary);
+  background-color: var(--qa-background);
+  color: var(--qa-ink);
   margin: 0;
   padding: 0;
-  font-family: 'Inter', 'SF Pro Display', 'Roboto', sans-serif;
+  font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
 }
 
-/* 2. PAGE BACKGROUNDS & SECTIONS */
 .main-content {
-  padding-top: 72px;
-  /* Navbar Height Offset */
-  min-height: calc(100vh - 72px);
+  min-height: calc(100vh - 64px);
 }
 
 /* 5. BUTTONS (Global Design System) */
@@ -77,7 +100,6 @@ body {
   transform: translateY(-1px);
 }
 
-/* 7. TABLES & DASHBOARDS (Global) */
 .table-container {
   background: var(--white);
   border: 1px solid var(--border-color);
@@ -85,7 +107,6 @@ body {
   overflow: hidden;
 }
 
-/* Smooth Route Transitions */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s ease;
@@ -96,13 +117,12 @@ body {
   opacity: 0;
 }
 
-/* Scrollbar Stylings */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--soft-off-white);
+  background: var(--qa-background);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -111,14 +131,14 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-purple);
+  background: var(--qa-primary);
 }
 
-/* Section Header Utility */
 .section-title {
+  color: var(--qa-ink);
+  font-family: var(--qa-heading-font);
   font-size: 28px;
   font-weight: 700;
-  color: var(--text-primary);
   margin-bottom: 1.5rem;
 }
 </style>
