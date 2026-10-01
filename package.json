@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "postbuild": "cp docs/index.html docs/404.html",
+    "postbuild": "node scripts/generate-static-pages.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

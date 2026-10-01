@@ -15,6 +15,15 @@ const routes = [
     },
   },
   {
+    path: "/products",
+    name: "ProductsView",
+    component: () => import("./views/ProductsView.vue"),
+    meta: {
+      title: "Admissions Products for Treatment Centers | QuickAdmit",
+      description: "Explore QuickAdmit products for instant eligibility, Blanket VOB, payer intelligence, reimbursement estimates, census monitoring, mobile access, and integrations.",
+    },
+  },
+  {
     path: "/api-docs",
     name: "ApiDocs",
     component: () => import("./views/ApiDocs.vue"),
@@ -65,7 +74,7 @@ const routes = [
     name: "BookDemoView",
     component: () => import("./views/BookDemoView.vue"),
     meta: {
-      title: "Request a QuickAdmit Demo | Admissions Verification",
+      title: "Book a Demo | QuickAdmit",
       description: "Book a personalized QuickAdmit demo and see how instant VOB, payer intelligence, and reimbursement estimates support faster admissions.",
     },
   },
@@ -99,7 +108,8 @@ router.afterEach((to) => {
   if (robotsMeta) robotsMeta.setAttribute("content", to.meta.robots || "index, follow");
 
   const canonical = document.querySelector('link[rel="canonical"]');
-  if (canonical) canonical.setAttribute("href", new URL(to.path, siteUrl).href);
+  const canonicalPath = to.path === "/" ? "/" : `${to.path.replace(/\/+$/, "")}/`;
+  if (canonical) canonical.setAttribute("href", new URL(canonicalPath, siteUrl).href);
 });
 
 export default router;

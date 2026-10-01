@@ -1,4 +1,4 @@
-import{_ as f,o as n,c as r,a as e,F as l,r as c,t as a,b as u,n as h,f as y}from"./index-NDfKd5ts.js";const g="/assets/api_hero_security-vke8F8fY.png",q=`curl --request GET \\
+import{_ as f,o as n,c as r,a as e,F as l,r as c,t as a,b as u,n as h,f as y}from"./index-BafTGoZp.js";const g="/assets/api_hero_security-vke8F8fY.png",q=`curl --request GET \\
   --url 'https://app.quickadmit.com/api/v2/payers?page=1&limit=25' \\
   --header 'Authorization: Bearer <your_api_key>'`,_=`{
   "payer": {
