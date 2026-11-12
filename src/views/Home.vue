@@ -53,6 +53,12 @@
                   </div>
                 </div>
 
+                <div v-else-if="activeHeroSlide.id === 'patient-verifier'" class="slide-result-list">
+                  <div v-for="patient in activeHeroSlide.results" :key="patient.name">
+                    <strong>{{ patient.name }}</strong><span>Match score {{ patient.score }}</span>
+                  </div>
+                </div>
+
                 <div v-else class="coverage-panel reimbursement-slide-panel">
                   <div class="coverage-status"><i class="fas fa-calculator"></i> Reimbursement estimate</div>
                   <div class="coverage-values">
@@ -102,14 +108,20 @@
         </div>
         <div class="workflow-journey-map">
           <svg class="workflow-journey-route" viewBox="0 0 1000 240" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-            <path class="workflow-journey-route-base" d="M 140 91 C 260 47 380 47 500 91 S 740 135 860 91 C 960 112 960 176 860 197 C 740 153 620 153 500 197 S 260 241 140 197" pathLength="100"></path>
-            <path class="workflow-journey-route-dots" d="M 140 91 C 260 47 380 47 500 91 S 740 135 860 91 C 960 112 960 176 860 197 C 740 153 620 153 500 197 S 260 241 140 197" pathLength="100"></path>
+            <path class="workflow-journey-route-base" d="M 100 91 C 187 47 273 47 360 91 S 533 135 620 91 S 793 47 880 91 C 980 112 980 176 880 197 C 750 153 620 153 490 197 S 230 241 100 197" pathLength="100"></path>
+            <path class="workflow-journey-route-dots" d="M 100 91 C 187 47 273 47 360 91 S 533 135 620 91 S 793 47 880 91 C 980 112 980 176 880 197 C 750 153 620 153 490 197 S 230 241 100 197" pathLength="100"></path>
           </svg>
           <ol class="workflow-journey" aria-label="QuickAdmit feature journey">
           <li>
             <a href="#workflows">
               <span class="workflow-journey-marker"><i class="fas fa-phone-volume"></i><span class="workflow-journey-flag"><i class="fas fa-flag-checkered"></i></span></span>
               <span class="workflow-journey-copy"><strong>Admissions call</strong><small>New inquiry arrives</small></span>
+            </a>
+          </li>
+          <li>
+            <a href="#patient-verifier">
+              <span class="workflow-journey-marker"><i class="fas fa-user-check"></i><span class="workflow-journey-flag"><i class="fas fa-flag-checkered"></i></span></span>
+              <span class="workflow-journey-copy"><strong>Patient Verifier</strong><small>Find matching patient details</small></span>
             </a>
           </li>
           <li>
@@ -146,6 +158,7 @@
           <div class="workflow-journey-guide" aria-hidden="true">
             <div class="workflow-journey-hud">
               <span class="journey-reward journey-reward-call"><i class="fas fa-phone-volume"></i><b>Caller connected</b></span>
+              <span class="journey-reward journey-reward-patient"><i class="fas fa-user-check"></i><b>Patient matches found</b></span>
               <span class="journey-reward journey-reward-payer"><i class="fas fa-tower-broadcast"></i><b>Payer live</b></span>
               <span class="journey-reward journey-reward-eligibility"><i class="fas fa-shield-halved"></i><b>Verified</b></span>
               <span class="journey-reward journey-reward-reimbursement"><i class="fas fa-calculator"></i><b>55.20%</b></span>
@@ -160,6 +173,7 @@
               </div>
               <span class="journey-record-progress"><i></i></span>
               <span class="journey-tool journey-tool-call"><i class="fas fa-phone-volume"></i></span>
+              <span class="journey-tool journey-tool-patient"><i class="fas fa-user-check"></i></span>
               <span class="journey-tool journey-tool-payer"><i class="fas fa-tower-broadcast"></i></span>
               <span class="journey-tool journey-tool-eligibility"><i class="fas fa-shield-halved"></i></span>
               <span class="journey-tool journey-tool-reimbursement"><i class="fas fa-calculator"></i></span>
@@ -243,6 +257,7 @@
           <article
             v-for="feature in features"
             :key="feature.title"
+            :id="feature.id"
             class="feature-card feature-card-interactive"
             tabindex="0"
             :aria-label="`${feature.title}. Focus to preview an example result.`"
@@ -254,7 +269,21 @@
             <div class="feature-card-stage">
               <p class="feature-card-description">{{ feature.body }}</p>
               <div class="feature-response-preview" :class="`feature-response-${feature.preview.type}`">
-                <template v-if="feature.preview.type === 'policies'">
+                <template v-if="feature.preview.type === 'patient'">
+                  <div class="feature-preview-heading">
+                    <span>Matching patients</span><strong>{{ feature.preview.badge }}</strong>
+                  </div>
+                  <div
+                    v-for="(row, index) in feature.preview.rows"
+                    :key="row.label"
+                    class="feature-preview-row"
+                    :style="{ '--preview-index': index }"
+                  >
+                    <span>{{ row.label }}</span><em :class="row.tone">{{ row.value }}</em>
+                  </div>
+                </template>
+
+                <template v-else-if="feature.preview.type === 'policies'">
                   <div class="feature-preview-heading">
                     <span>Policies found</span><strong>{{ feature.preview.badge }}</strong>
                   </div>
@@ -296,17 +325,6 @@
                   </div>
                 </template>
 
-                <template v-else-if="feature.preview.type === 'report'">
-                  <div class="feature-preview-heading">
-                    <span>Export audit</span><strong><i class="fas fa-file-csv"></i> CSV</strong>
-                  </div>
-                  <div class="feature-preview-export">
-                    <span><small>Type</small><b>Inquiry</b></span>
-                    <span><small>Date range</small><b>Sep 1–18</b></span>
-                    <i class="fas fa-download"></i>
-                  </div>
-                </template>
-
                 <template v-else>
                   <div class="feature-preview-heading">
                     <span>Live payer outages</span><strong>{{ feature.preview.badge }}</strong>
@@ -323,6 +341,22 @@
               </div>
             </div>
           </article>
+        </div>
+        <div class="feature-access-strip">
+          <div class="feature-access-copy">
+            <div class="icon-tile"><i class="fas fa-chart-column"></i></div>
+            <div>
+              <h3>Reporting</h3>
+              <p>Filter and export inquiry and Blanket VOB results to CSV for billing, audits and team reporting.</p>
+            </div>
+          </div>
+          <div class="feature-access-options" aria-label="QuickAdmit reporting options">
+            <a class="feature-access-option" href="#automation">
+              <i class="fas fa-file-csv"></i>
+              <span><b>CSV export</b><small>Inquiries &amp; Blanket VOB</small></span>
+              <i class="fas fa-arrow-right feature-access-arrow"></i>
+            </a>
+          </div>
         </div>
         <div class="feature-access-strip">
           <div class="feature-access-copy">
@@ -774,6 +808,25 @@ export default {
             { label: "Employer", value: "Northstar Health" },
           ],
         },
+        {
+          id: "patient-verifier",
+          title: "Patient Verifier",
+          icon: "fas fa-user-check",
+          result: "3 patient matches",
+          footnote: "Review patient details",
+          status: "3 matches",
+          fields: [
+            { label: "First name", value: "John" },
+            { label: "Last name", value: "Smith" },
+            { label: "Date of birth", value: "05 / 23 / 1997" },
+            { label: "State", value: "Florida" },
+          ],
+          results: [
+            { name: "John A. Smith", score: 95 },
+            { name: "John B. Smith", score: 72 },
+            { name: "John C. Smith", score: 60 },
+          ],
+        },
       ],
       reimbursementType: "bcbs",
       reimbursementQuery: "",
@@ -808,6 +861,21 @@ export default {
         clicking: false,
       },
       features: [
+        {
+          id: "patient-verifier",
+          title: "Patient Verifier",
+          icon: "fas fa-user-check",
+          body: "Find matching patient details, review match scores, and continue with the selected patient in Blanket VOB.",
+          preview: {
+            type: "patient",
+            badge: "Match scores",
+            rows: [
+              { label: "John A. Smith", value: "95", tone: "success" },
+              { label: "John B. Smith", value: "72", tone: "info" },
+              { label: "John C. Smith", value: "60", tone: "muted" },
+            ],
+          },
+        },
         {
           title: "Payer intelligence",
           icon: "fas fa-signal",
@@ -865,12 +933,6 @@ export default {
           icon: "fas fa-layer-group",
           body: "Batch reverify your entire census with one click, identify lapsed policies and receive the completed results by email.",
           preview: { type: "batch" },
-        },
-        {
-          title: "Reporting",
-          icon: "fas fa-chart-column",
-          body: "Filter and export inquiry and Blanket VOB results to CSV for billing, audits and team reporting.",
-          preview: { type: "report" },
         },
       ],
       reimbursementLevels: [
@@ -1176,26 +1238,29 @@ export default {
 .workflow-journey-route-dots { stroke: rgba(124,77,222,.64); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 1.35 2.15; animation: journey-route-s 9s linear infinite; }
 .workflow-journey { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; }
 .workflow-journey li { position: absolute; z-index: 1; width: min(150px, 28vw); transform: translate(-50%, -50%); }
-.workflow-journey li:nth-child(1) { top: 38%; left: 14%; }
-.workflow-journey li:nth-child(2) { top: 38%; left: 50%; }
-.workflow-journey li:nth-child(3) { top: 38%; left: 86%; }
-.workflow-journey li:nth-child(4) { top: 82%; left: 86%; }
-.workflow-journey li:nth-child(5) { top: 82%; left: 50%; }
-.workflow-journey li:nth-child(6) { top: 82%; left: 14%; }
+.workflow-journey li:nth-child(1) { top: 38%; left: 10%; }
+.workflow-journey li:nth-child(2) { top: 38%; left: 36%; }
+.workflow-journey li:nth-child(3) { top: 38%; left: 62%; }
+.workflow-journey li:nth-child(4) { top: 38%; left: 88%; }
+.workflow-journey li:nth-child(5) { top: 82%; left: 88%; }
+.workflow-journey li:nth-child(6) { top: 82%; left: 49%; }
+.workflow-journey li:nth-child(7) { top: 82%; left: 10%; }
 .workflow-journey a { display: flex; align-items: center; flex-direction: column; color: inherit; text-align: center; text-decoration: none; }
 .workflow-journey-marker { position: relative; display: grid; width: 58px; height: 58px; place-items: center; border: 1px solid #d9ccf8; border-radius: 50%; color: var(--qa-primary); background: white; box-shadow: 0 8px 24px rgba(74,43,135,.13); font-size: 18px; animation: journey-marker-float 4s ease-in-out infinite; }
 .workflow-journey-marker::before { position: absolute; inset: -7px; border: 2px solid rgba(124,77,222,.42); border-radius: 50%; box-shadow: 0 0 0 5px rgba(124,77,222,.07), 0 0 20px rgba(124,77,222,.2); content: ""; opacity: 0; }
-.workflow-journey li:nth-child(1) .workflow-journey-marker::before { animation: journey-marker-active-call 36s step-end infinite; }
-.workflow-journey li:nth-child(2) .workflow-journey-marker::before { animation: journey-marker-active-payer 36s step-end infinite; }
-.workflow-journey li:nth-child(3) .workflow-journey-marker::before { animation: journey-marker-active-eligibility 36s step-end infinite; }
-.workflow-journey li:nth-child(4) .workflow-journey-marker::before { animation: journey-marker-active-reimbursement 36s step-end infinite; }
-.workflow-journey li:nth-child(5) .workflow-journey-marker::before { animation: journey-marker-active-automation 36s step-end infinite; }
-.workflow-journey li:nth-child(6) .workflow-journey-marker::before { animation: journey-marker-active-access 36s step-end infinite; }
-.workflow-journey li:nth-child(2) .workflow-journey-marker { animation-delay: -.8s; }
-.workflow-journey li:nth-child(3) .workflow-journey-marker { animation-delay: -1.6s; }
-.workflow-journey li:nth-child(4) .workflow-journey-marker { animation-delay: -2.4s; }
-.workflow-journey li:nth-child(5) .workflow-journey-marker { animation-delay: -3.2s; }
-.workflow-journey li:nth-child(6) .workflow-journey-marker { animation-delay: -4s; }
+.workflow-journey li:nth-child(1) .workflow-journey-marker::before { animation: journey-marker-active-call 42s step-end infinite; }
+.workflow-journey li:nth-child(2) .workflow-journey-marker::before { animation: journey-marker-active-patient 42s step-end infinite; }
+.workflow-journey li:nth-child(3) .workflow-journey-marker::before { animation: journey-marker-active-payer 42s step-end infinite; }
+.workflow-journey li:nth-child(4) .workflow-journey-marker::before { animation: journey-marker-active-eligibility 42s step-end infinite; }
+.workflow-journey li:nth-child(5) .workflow-journey-marker::before { animation: journey-marker-active-reimbursement 42s step-end infinite; }
+.workflow-journey li:nth-child(6) .workflow-journey-marker::before { animation: journey-marker-active-automation 42s step-end infinite; }
+.workflow-journey li:nth-child(7) .workflow-journey-marker::before { animation: journey-marker-active-access 42s step-end infinite; }
+.workflow-journey li:nth-child(2) .workflow-journey-marker { animation-delay: -.4s; }
+.workflow-journey li:nth-child(3) .workflow-journey-marker { animation-delay: -.8s; }
+.workflow-journey li:nth-child(4) .workflow-journey-marker { animation-delay: -1.6s; }
+.workflow-journey li:nth-child(5) .workflow-journey-marker { animation-delay: -2.4s; }
+.workflow-journey li:nth-child(6) .workflow-journey-marker { animation-delay: -3.2s; }
+.workflow-journey li:nth-child(7) .workflow-journey-marker { animation-delay: -4s; }
 .workflow-journey-flag { position: absolute; right: -4px; bottom: -2px; display: grid; width: 21px; height: 21px; place-items: center; border: 3px solid white; border-radius: 50%; color: white; background: #2caa65; box-shadow: 0 0 0 3px rgba(44,170,101,.1); font-size: 7px; animation: journey-flag-pulse 2.4s ease-in-out infinite; }
 .workflow-journey-copy { margin-top: 13px; }
 .workflow-journey-copy strong, .workflow-journey-copy small { display: block; }
@@ -1203,150 +1268,172 @@ export default {
 .workflow-journey-copy small { margin-top: 3px; color: var(--qa-muted); font-size: 9px; }
 .workflow-journey a:hover .workflow-journey-marker { border-color: var(--qa-primary); box-shadow: 0 10px 28px rgba(74,43,135,.2); }
 .workflow-journey-hud { position: absolute; z-index: 5; bottom: 90px; left: 0; width: min(210px, 44vw); height: 58px; transform: translateX(-50%); pointer-events: none; }
-.workflow-journey-hud::before { content: "A new admissions call just came in."; display: block; width: 100%; padding: 8px 11px; border: 1px solid #dacdf6; border-radius: 11px; color: #5f419d; background: rgba(255,255,255,.97); box-shadow: 0 9px 24px rgba(74,43,135,.16); font-size: 9px; font-weight: 750; line-height: 1.4; text-align: center; backdrop-filter: blur(8px); animation: journey-guide-message 36s step-end infinite, journey-guide-bubble 36s step-end infinite; }
-.workflow-journey-guide { position: absolute; z-index: 4; top: 38%; left: 14%; width: 0; height: 0; pointer-events: none; animation: journey-guide-route 36s linear infinite; }
+.workflow-journey-hud::before { content: "A new admissions call just came in."; display: block; width: 100%; padding: 8px 11px; border: 1px solid #dacdf6; border-radius: 11px; color: #5f419d; background: rgba(255,255,255,.97); box-shadow: 0 9px 24px rgba(74,43,135,.16); font-size: 9px; font-weight: 750; line-height: 1.4; text-align: center; backdrop-filter: blur(8px); animation: journey-guide-message 42s step-end infinite, journey-guide-bubble 42s step-end infinite; }
+.workflow-journey-guide { position: absolute; z-index: 4; top: 38%; left: 10%; width: 0; height: 0; pointer-events: none; animation: journey-guide-route 42s linear infinite; }
 .workflow-journey-guide::before { position: absolute; top: 0; left: 0; width: 38px; height: 13px; border-radius: 50%; background: rgba(124,77,222,.12); box-shadow: 0 0 0 6px rgba(124,77,222,.045), 0 5px 16px rgba(72,42,128,.18); content: ""; transform: translate(-50%, -50%); animation: journey-guide-glow 1.8s ease-in-out infinite; }
-.workflow-journey-record { position: absolute; top: 0; left: 0; width: 116px; padding: 8px 9px 7px; border: 1px solid rgba(124,77,222,.2); border-radius: 11px; background: rgba(255,255,255,.97); box-shadow: 0 9px 25px rgba(55,32,96,.2); transform: translateX(-50%); transform-origin: 50% 100%; translate: 0 -165%; backdrop-filter: blur(8px); animation: journey-record-actions 36s ease-in-out infinite; }
+.workflow-journey-record { position: absolute; top: 0; left: 0; width: 116px; padding: 8px 9px 7px; border: 1px solid rgba(124,77,222,.2); border-radius: 11px; background: rgba(255,255,255,.97); box-shadow: 0 9px 25px rgba(55,32,96,.2); transform: translateX(-50%); transform-origin: 50% 100%; translate: 0 -165%; backdrop-filter: blur(8px); animation: journey-record-actions 42s ease-in-out infinite; }
 .journey-record-main { display: grid; grid-template-columns: 26px minmax(0, 1fr) 10px; gap: 7px; align-items: center; }
 .journey-record-patient { display: grid; width: 26px; height: 26px; place-items: center; border-radius: 8px; color: var(--qa-primary); background: var(--qa-primary-soft); font-size: 10px; }
 .journey-record-copy, .journey-record-copy small, .journey-record-copy strong { display: block; min-width: 0; }
 .journey-record-copy small { color: #8d8298; font-size: 5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 .journey-record-copy strong { margin-top: 2px; overflow: hidden; color: var(--qa-ink); font-family: var(--qa-heading-font); font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
-.journey-record-status::before { content: "New caller"; animation: journey-record-status 36s step-end infinite; }
+.journey-record-status::before { content: "New caller"; animation: journey-record-status 42s step-end infinite; }
 .journey-record-check { color: #36ad68; font-size: 9px; }
 .journey-record-progress { display: block; height: 3px; margin-top: 7px; overflow: hidden; border-radius: 999px; background: #ece6f5; }
-.journey-record-progress i { display: block; width: 12%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--qa-primary), #48c97c); animation: journey-record-progress 36s step-end infinite; }
+.journey-record-progress i { display: block; width: 12%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--qa-primary), #48c97c); animation: journey-record-progress 42s step-end infinite; }
 .journey-tool { position: absolute; top: -9px; right: -8px; display: grid; width: 22px; height: 22px; place-items: center; border: 2px solid white; border-radius: 7px; color: white; background: var(--qa-primary); box-shadow: 0 5px 12px rgba(55,32,96,.28); font-size: 8px; opacity: 0; }
-.journey-tool-call { animation: journey-tool-call 36s step-end infinite; }
-.journey-tool-payer { background: #3d79c7; animation: journey-tool-payer 36s step-end infinite; }
-.journey-tool-eligibility { background: #2caa65; animation: journey-tool-eligibility 36s step-end infinite; }
-.journey-tool-reimbursement { color: #5d4513; background: #f3c85c; animation: journey-tool-reimbursement 36s step-end infinite; }
-.journey-tool-automation { animation: journey-tool-automation 36s step-end infinite; }
-.journey-tool-access { background: #286f9f; animation: journey-tool-access 36s step-end infinite; }
+.journey-tool-call { animation: journey-tool-call 42s step-end infinite; }
+.journey-tool-patient { animation: journey-tool-patient 42s step-end infinite; }
+.journey-tool-payer { background: #3d79c7; animation: journey-tool-payer 42s step-end infinite; }
+.journey-tool-eligibility { background: #2caa65; animation: journey-tool-eligibility 42s step-end infinite; }
+.journey-tool-reimbursement { color: #5d4513; background: #f3c85c; animation: journey-tool-reimbursement 42s step-end infinite; }
+.journey-tool-automation { animation: journey-tool-automation 42s step-end infinite; }
+.journey-tool-access { background: #286f9f; animation: journey-tool-access 42s step-end infinite; }
 .journey-reward { position: absolute; z-index: 5; top: 31px; left: 50%; display: flex; width: max-content; align-items: center; gap: 4px; translate: -50% 0; padding: 4px 6px; border: 2px solid white; border-radius: 999px; color: white; box-shadow: 0 6px 16px rgba(49,33,83,.22); font-size: 7px; opacity: 0; }
 .journey-reward i { width: 10px; text-align: center; }
 .journey-reward b { font-size: 7px; white-space: nowrap; }
-.journey-reward-call { background: #7c4dde; animation: journey-reward-call 36s linear infinite; }
+.journey-reward-call { background: #7c4dde; animation: journey-reward-call 42s linear infinite; }
 .journey-reward-call i { animation: journey-reward-phone 1.1s ease-in-out infinite; }
-.journey-reward-payer { background: #3d79c7; animation: journey-reward-payer 36s linear infinite; }
+.journey-reward-patient { background: #7c4dde; animation: journey-reward-patient 42s linear infinite; }
+.journey-reward-payer { background: #3d79c7; animation: journey-reward-payer 42s linear infinite; }
 .journey-reward-payer i { animation: journey-reward-signal 1s ease-in-out infinite; }
-.journey-reward-eligibility { background: #2caa65; animation: journey-reward-eligibility 36s linear infinite; }
+.journey-reward-eligibility { background: #2caa65; animation: journey-reward-eligibility 42s linear infinite; }
 .journey-reward-eligibility i { animation: journey-reward-pop 1.1s ease-in-out infinite; }
-.journey-reward-reimbursement { color: #533d11; background: #f3c85c; animation: journey-reward-reimbursement 36s linear infinite; }
+.journey-reward-reimbursement { color: #533d11; background: #f3c85c; animation: journey-reward-reimbursement 42s linear infinite; }
 .journey-reward-reimbursement i { animation: journey-reward-count .8s ease-in-out infinite alternate; }
-.journey-reward-automation { background: #7c4dde; animation: journey-reward-automation 36s linear infinite; }
+.journey-reward-automation { background: #7c4dde; animation: journey-reward-automation 42s linear infinite; }
 .journey-reward-automation i { animation: journey-reward-spin 2s linear infinite; }
-.journey-reward-access { background: #286f9f; animation: journey-reward-access 36s linear infinite; }
+.journey-reward-access { background: #286f9f; animation: journey-reward-access 42s linear infinite; }
 .journey-reward-access i { animation: journey-reward-phone 1.1s ease-in-out infinite; }
 @keyframes journey-route-s { to { stroke-dashoffset: -28; } }
 @keyframes journey-marker-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 @keyframes journey-flag-pulse { 0%, 100% { box-shadow: 0 0 0 3px rgba(44,170,101,.1); } 50% { box-shadow: 0 0 0 7px rgba(44,170,101,.03); } }
-@keyframes journey-marker-active-call { 0%, 16.5% { opacity: 1; } 16.6%, 100% { opacity: 0; } }
-@keyframes journey-marker-active-payer { 0%, 16.5%, 33.3%, 100% { opacity: 0; } 16.6%, 33.2% { opacity: 1; } }
-@keyframes journey-marker-active-eligibility { 0%, 33.2%, 50%, 100% { opacity: 0; } 33.3%, 49.9% { opacity: 1; } }
-@keyframes journey-marker-active-reimbursement { 0%, 49.9%, 66.6%, 100% { opacity: 0; } 50%, 66.5% { opacity: 1; } }
-@keyframes journey-marker-active-automation { 0%, 66.5%, 83.3%, 100% { opacity: 0; } 66.6%, 83.2% { opacity: 1; } }
-@keyframes journey-marker-active-access { 0%, 83.2% { opacity: 0; } 83.3%, 100% { opacity: 1; } }
+@keyframes journey-marker-active-call { 0%, 14.1% { opacity: 1; } 14.2%, 100% { opacity: 0; } }
+@keyframes journey-marker-active-patient { 0%, 14.1%, 28.5%, 100% { opacity: 0; } 14.2%, 28.4% { opacity: 1; } }
+@keyframes journey-marker-active-payer { 0%, 14.1%, 42.8%, 100% { opacity: 0; } 28.5%, 42.7% { opacity: 1; } }
+@keyframes journey-marker-active-eligibility { 0%, 42.7%, 57.1%, 100% { opacity: 0; } 42.8%, 57% { opacity: 1; } }
+@keyframes journey-marker-active-reimbursement { 0%, 57%, 71.4%, 100% { opacity: 0; } 57.1%, 71.3% { opacity: 1; } }
+@keyframes journey-marker-active-automation { 0%, 71.3%, 85.7%, 100% { opacity: 0; } 71.4%, 85.6% { opacity: 1; } }
+@keyframes journey-marker-active-access { 0%, 85.6% { opacity: 0; } 85.7%, 100% { opacity: 1; } }
 @keyframes journey-guide-glow { 50% { opacity: .55; transform: translate(-50%, -50%) scale(.82); } }
 @keyframes journey-guide-route {
-  0%, 16% { top: 38%; left: 14%; opacity: 1; }
-  18% { top: 25.694%; left: 26%; }
-  20% { top: 25.694%; left: 38%; }
-  22%, 33% { top: 38%; left: 50%; }
-  35% { top: 50.139%; left: 62%; }
-  37% { top: 50.139%; left: 74%; }
-  39%, 50% { top: 38%; left: 86%; }
-  53% { top: 51.312%; left: 92.667%; }
-  56% { top: 68.688%; left: 92.667%; }
-  58%, 66% { top: 82%; left: 86%; }
-  69% { top: 69.861%; left: 74%; }
-  72% { top: 69.861%; left: 62%; }
-  75%, 83% { top: 82%; left: 50%; }
-  86% { top: 94.306%; left: 38%; }
-  89% { top: 94.306%; left: 26%; }
-  92%, 97% { top: 82%; left: 14%; opacity: 1; }
-  99% { top: 82%; left: 14%; opacity: 0; }
-  100% { top: 38%; left: 14%; opacity: 0; }
+  0%, 13.7% { top: 38%; left: 10%; opacity: 1; }
+  15.4% { top: 25.694%; left: 18.667%; }
+  17.1% { top: 25.694%; left: 27.333%; }
+  18.9%, 28.3% { top: 38%; left: 36%; }
+  29.7% { top: 50.139%; left: 44.667%; }
+  31.4% { top: 50.139%; left: 53.333%; }
+  33.1%, 42.6% { top: 38%; left: 62%; }
+  44.3% { top: 25.694%; left: 70.667%; }
+  46% { top: 25.694%; left: 79.333%; }
+  47.7%, 57.1% { top: 38%; left: 88%; }
+  59.7% { top: 51.312%; left: 94.667%; }
+  62.3% { top: 68.688%; left: 94.667%; }
+  64%, 70.9% { top: 82%; left: 88%; }
+  73.4% { top: 69.861%; left: 75%; }
+  76% { top: 69.861%; left: 62%; }
+  78.6%, 85.4% { top: 82%; left: 49%; }
+  88% { top: 94.306%; left: 36%; }
+  90.6% { top: 94.306%; left: 23%; }
+  93.1%, 97.4% { top: 82%; left: 10%; opacity: 1; }
+  99.1% { top: 82%; left: 10%; opacity: 0; }
+  100% { top: 38%; left: 10%; opacity: 0; }
 }
 @keyframes journey-guide-message {
-  0%, 7.9% { content: "A new admissions call just came in."; }
-  8%, 16.5% { content: "Caller connected — ready to help!"; }
-  16.6%, 24.9% { content: "Is the patient's payer available right now?"; }
-  25%, 33.2% { content: "Payer is online — ready to verify!"; }
-  33.3%, 41.5% { content: "I want to check patient eligibility in seconds."; }
-  41.6%, 49.9% { content: "Coverage found — ready to admit!"; }
-  50%, 58.2% { content: "What should we expect to be paid?"; }
-  58.3%, 66.5% { content: "Reimbursement estimate ready!"; }
-  66.6%, 74.9% { content: "Can I reverify my entire census at once?"; }
-  75%, 83.2% { content: "Census complete — results emailed!"; }
-  83.3%, 91.5% { content: "Can I access results from anywhere?"; }
-  91.6%, 100% { content: "Mobile and API access connected!"; }
+  0%, 6.8% { content: "A new admissions call just came in."; }
+  6.9%, 14.1% { content: "Caller connected — ready to help!"; }
+  28.5%, 35.6% { content: "Is the patient's payer available right now?"; }
+  35.7%, 42.7% { content: "Payer is online — ready to verify!"; }
+  42.8%, 49.9% { content: "I want to check patient eligibility in seconds."; }
+  49.9%, 57.1% { content: "Coverage found — ready to admit!"; }
+  57.1%, 64.2% { content: "What should we expect to be paid?"; }
+  64.3%, 71.3% { content: "Reimbursement estimate ready!"; }
+  71.4%, 78.5% { content: "Can I reverify my entire census at once?"; }
+  78.6%, 85.6% { content: "Census complete — results emailed!"; }
+  85.7%, 92.7% { content: "Can I access results from anywhere?"; }
+  92.8%, 100% { content: "Mobile and API access connected!"; }
+  14.2%, 21.3% { content: "Which patient details match this caller?"; }
+  21.4%, 28.4% { content: "Patient matches found — ready to review!"; }
 }
 @keyframes journey-guide-bubble {
-  0%, 7.9%, 16.6%, 24.9%, 33.3%, 41.5%, 50%, 58.2%, 66.6%, 74.9%, 83.3%, 91.5% { color: #5f419d; border-color: #dacdf6; background: white; }
-  8%, 16.5%, 25%, 33.2%, 41.6%, 49.9%, 58.3%, 66.5%, 75%, 83.2%, 91.6%, 100% { color: #207a45; border-color: #afe0c2; background: #effbf3; }
+  0%, 6.8%, 28.5%, 35.6%, 42.8%, 49.9%, 57.1%, 64.2%, 71.4%, 78.5%, 85.7%, 92.7% { color: #5f419d; border-color: #dacdf6; background: white; }
+  6.9%, 14.1%, 35.7%, 42.7%, 49.9%, 57.1%, 64.3%, 71.3%, 78.6%, 85.6%, 92.8%, 100% { color: #207a45; border-color: #afe0c2; background: #effbf3; }
+  14.2%, 21.3% { color: #5f419d; border-color: #dacdf6; background: white; }
+  21.4%, 28.4% { color: #207a45; border-color: #afe0c2; background: #effbf3; }
 }
 @keyframes journey-record-actions {
-  0%, 7.8%, 16.5%, 24.8%, 33.2%, 41.5%, 49.9%, 58.2%, 66.5%, 74.9%, 83.2%, 91.5%, 100% { translate: 0 -165%; scale: 1; }
-  8.6%, 25.8%, 42.5%, 59.2%, 75.6%, 92.4% { translate: 0 -175%; scale: 1.04; }
-  10.2%, 27.4%, 44.1%, 60.8%, 77.2%, 94% { translate: 0 -165%; scale: 1; }
+  0%, 6.7%, 14.1%, 35.5%, 42.7%, 49.9%, 57.1%, 64.2%, 71.3%, 78.5%, 85.6%, 92.7%, 100% { translate: 0 -165%; scale: 1; }
+  7.4%, 36.4%, 50.7%, 65%, 79.1%, 93.5% { translate: 0 -175%; scale: 1.04; }
+  8.7%, 37.8%, 52.1%, 66.4%, 80.5%, 94.9% { translate: 0 -165%; scale: 1; }
+  14.2%, 21.3%, 28.4% { translate: 0 -165%; scale: 1; }
+  22.1% { translate: 0 -175%; scale: 1.04; }
+  23.5% { translate: 0 -165%; scale: 1; }
 }
 @keyframes journey-record-status {
-  0%, 16.5% { content: "New caller"; }
-  16.6%, 33.2% { content: "Payer available"; }
-  33.3%, 49.9% { content: "Coverage active"; }
-  50%, 66.5% { content: "55.20% allowed"; }
-  66.6%, 83.2% { content: "Batch complete"; }
-  83.3%, 100% { content: "Access connected"; }
+  0%, 14.1% { content: "New caller"; }
+  28.5%, 42.7% { content: "Payer available"; }
+  42.8%, 57.1% { content: "Coverage active"; }
+  57.1%, 71.3% { content: "55.20% allowed"; }
+  71.4%, 85.6% { content: "Batch complete"; }
+  85.7%, 100% { content: "Access connected"; }
+  14.2%, 28.4% { content: "Patient matches"; }
 }
 @keyframes journey-record-progress {
-  0%, 16.5% { width: 12%; }
-  16.6%, 33.2% { width: 30%; }
-  33.3%, 49.9% { width: 48%; }
-  50%, 66.5% { width: 66%; }
-  66.6%, 83.2% { width: 84%; }
-  83.3%, 100% { width: 100%; }
+  0%, 14.1% { width: 12%; }
+  28.5%, 42.7% { width: 30%; }
+  42.8%, 57.1% { width: 48%; }
+  57.1%, 71.3% { width: 66%; }
+  71.4%, 85.6% { width: 84%; }
+  85.7%, 100% { width: 100%; }
+  14.2%, 28.4% { width: 21%; }
 }
-@keyframes journey-tool-call { 0%, 16.5% { opacity: 1; } 16.6%, 100% { opacity: 0; } }
-@keyframes journey-tool-payer { 0%, 16.5%, 33.3%, 100% { opacity: 0; } 16.6%, 33.2% { opacity: 1; } }
-@keyframes journey-tool-eligibility { 0%, 33.2%, 50%, 100% { opacity: 0; } 33.3%, 49.9% { opacity: 1; } }
-@keyframes journey-tool-reimbursement { 0%, 49.9%, 66.6%, 100% { opacity: 0; } 50%, 66.5% { opacity: 1; } }
-@keyframes journey-tool-automation { 0%, 66.5%, 83.3%, 100% { opacity: 0; } 66.6%, 83.2% { opacity: 1; } }
-@keyframes journey-tool-access { 0%, 83.2% { opacity: 0; } 83.3%, 100% { opacity: 1; } }
+@keyframes journey-tool-call { 0%, 14.1% { opacity: 1; } 14.2%, 100% { opacity: 0; } }
+@keyframes journey-tool-patient { 0%, 14.1%, 28.5%, 100% { opacity: 0; } 14.2%, 28.4% { opacity: 1; } }
+@keyframes journey-tool-payer { 0%, 14.1%, 42.8%, 100% { opacity: 0; } 28.5%, 42.7% { opacity: 1; } }
+@keyframes journey-tool-eligibility { 0%, 42.7%, 57.1%, 100% { opacity: 0; } 42.8%, 57% { opacity: 1; } }
+@keyframes journey-tool-reimbursement { 0%, 57%, 71.4%, 100% { opacity: 0; } 57.1%, 71.3% { opacity: 1; } }
+@keyframes journey-tool-automation { 0%, 71.3%, 85.7%, 100% { opacity: 0; } 71.4%, 85.6% { opacity: 1; } }
+@keyframes journey-tool-access { 0%, 85.6% { opacity: 0; } 85.7%, 100% { opacity: 1; } }
 @keyframes journey-reward-call {
-  0%, 7.8% { opacity: 0; transform: translateY(4px) scale(.7); }
-  8.5% { opacity: 1; transform: translateY(-4px) scale(1.15); }
-  10%, 16.5% { opacity: 1; transform: translateY(0) scale(1); }
-  16.7%, 100% { opacity: 0; transform: translateY(4px) scale(.7); }
+  0%, 6.7% { opacity: 0; transform: translateY(4px) scale(.7); }
+  7.3% { opacity: 1; transform: translateY(-4px) scale(1.15); }
+  8.6%, 14.1% { opacity: 1; transform: translateY(0) scale(1); }
+  14.3%, 100% { opacity: 0; transform: translateY(4px) scale(.7); }
+}
+@keyframes journey-reward-patient {
+  0%, 21.3% { opacity: 0; transform: translateY(4px) scale(.7); }
+  22% { opacity: 1; transform: translateY(-4px) scale(1.15); }
+  23.4%, 28.4% { opacity: 1; transform: translateY(0) scale(1); }
+  28.6%, 100% { opacity: 0; transform: translateY(4px) scale(.7); }
 }
 @keyframes journey-reward-payer {
-  0%, 24.8% { opacity: 0; transform: translateY(4px) scale(.7); }
-  25.5% { opacity: 1; transform: translateY(-4px) scale(1.15); }
-  27%, 33.2% { opacity: 1; transform: translateY(0) scale(1); }
-  33.4%, 100% { opacity: 0; transform: translateY(4px) scale(.7); }
+  0%, 35.5% { opacity: 0; transform: translateY(4px) scale(.7); }
+  36.1% { opacity: 1; transform: translateY(-4px) scale(1.15); }
+  37.4%, 42.7% { opacity: 1; transform: translateY(0) scale(1); }
+  42.9%, 100% { opacity: 0; transform: translateY(4px) scale(.7); }
 }
 @keyframes journey-reward-eligibility {
-  0%, 41.5% { opacity: 0; transform: translateY(4px) scale(.7); }
-  42.2% { opacity: 1; transform: translateY(-5px) scale(1.15); }
-  43.7%, 49.9% { opacity: 1; transform: translateY(0) scale(1); }
-  50.1%, 100% { opacity: 0; transform: translateY(4px) scale(.7); }
+  0%, 49.9% { opacity: 0; transform: translateY(4px) scale(.7); }
+  50.5% { opacity: 1; transform: translateY(-5px) scale(1.15); }
+  51.7%, 57.1% { opacity: 1; transform: translateY(0) scale(1); }
+  57.2%, 100% { opacity: 0; transform: translateY(4px) scale(.7); }
 }
 @keyframes journey-reward-reimbursement {
-  0%, 58.2% { opacity: 0; transform: translateY(4px) scale(.7); }
-  58.9% { opacity: 1; transform: translateY(-5px) scale(1.15); }
-  60.4%, 66.5% { opacity: 1; transform: translateY(0) scale(1); }
-  66.7%, 100% { opacity: 0; transform: translateY(4px) scale(.7); }
+  0%, 64.2% { opacity: 0; transform: translateY(4px) scale(.7); }
+  64.8% { opacity: 1; transform: translateY(-5px) scale(1.15); }
+  66.1%, 71.3% { opacity: 1; transform: translateY(0) scale(1); }
+  71.5%, 100% { opacity: 0; transform: translateY(4px) scale(.7); }
 }
 @keyframes journey-reward-automation {
-  0%, 74.9% { opacity: 0; transform: translateY(4px) scale(.7); }
-  75.6% { opacity: 1; transform: translateY(-5px) scale(1.15); }
-  77.1%, 83.2% { opacity: 1; transform: translateY(0) scale(1); }
-  83.4%, 100% { opacity: 0; transform: translateY(4px) scale(.7); }
+  0%, 78.5% { opacity: 0; transform: translateY(4px) scale(.7); }
+  79.1% { opacity: 1; transform: translateY(-5px) scale(1.15); }
+  80.4%, 85.6% { opacity: 1; transform: translateY(0) scale(1); }
+  85.8%, 100% { opacity: 0; transform: translateY(4px) scale(.7); }
 }
 @keyframes journey-reward-access {
-  0%, 91.5% { opacity: 0; transform: translateY(4px) scale(.7); }
-  92.2% { opacity: 1; transform: translateY(-5px) scale(1.15); }
-  93.7%, 99% { opacity: 1; transform: translateY(0) scale(1); }
+  0%, 92.7% { opacity: 0; transform: translateY(4px) scale(.7); }
+  93.3% { opacity: 1; transform: translateY(-5px) scale(1.15); }
+  94.6%, 99.1% { opacity: 1; transform: translateY(0) scale(1); }
   100% { opacity: 0; transform: translateY(4px) scale(.7); }
 }
 @keyframes journey-reward-signal { 50% { opacity: .45; transform: scale(.82); } }
@@ -1368,6 +1455,7 @@ export default {
 .feature-card:not(.feature-card-dark) p { margin: 14px 0 0; font-size: 14px; line-height: 1.55; }
 .feature-card-dark { grid-row: span 3; }
 .feature-card-tall { min-height: 546px; }
+#patient-verifier { scroll-margin-top: 88px; }
 .feature-card-interactive { position: relative; min-height: 178px !important; overflow: hidden; outline: none; cursor: default; transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease; }
 .feature-card-interactive:hover, .feature-card-interactive:focus-visible { z-index: 1; border-color: rgba(124,77,222,.36); box-shadow: 0 18px 44px -18px rgba(76,44,139,.3); transform: translateY(-3px); }
 .feature-card-interactive:focus-visible { box-shadow: 0 0 0 3px rgba(124,77,222,.16), 0 18px 44px -18px rgba(76,44,139,.3); }
@@ -1410,13 +1498,6 @@ export default {
 .feature-preview-summary { display: grid; grid-template-columns: 1.2fr .75fr 1fr; gap: 5px; color: #91889e; font-size: 6px; }
 .feature-preview-summary span, .feature-preview-summary b { display: block; }
 .feature-preview-summary b { margin-bottom: 1px; color: #4d405e; font-size: 8px; }
-.feature-preview-export { display: grid; flex: 1; grid-template-columns: 1fr 1fr 26px; align-items: center; gap: 6px; }
-.feature-preview-export > span { padding: 5px 6px; border-radius: 7px; background: #f7f4fb; }
-.feature-preview-export small, .feature-preview-export b { display: block; }
-.feature-preview-export small { color: #92889e; font-size: 6px; }
-.feature-preview-export b { margin-top: 2px; color: #4d405e; font-size: 8px; }
-.feature-preview-export > i { display: grid; width: 25px; height: 25px; place-items: center; border-radius: 50%; color: white; background: var(--qa-primary); font-size: 8px; transform: translateY(-3px); transition: transform .22s ease .16s; }
-.feature-card-interactive:hover .feature-preview-export > i, .feature-card-interactive:focus .feature-preview-export > i { transform: translateY(0); }
 @keyframes feature-alert-ring { 0%, 100% { transform: rotate(0); } 30% { transform: rotate(9deg); } 60% { transform: rotate(-8deg); } 82% { transform: rotate(4deg); } }
 .inquiry-response-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; padding: 0 12px 8px; }
 .inquiry-response-meta div { padding: 7px 8px; border: 1px solid rgba(255,255,255,.07); border-radius: 8px; background: rgba(255,255,255,.025); }
@@ -1516,7 +1597,7 @@ export default {
   .section-block { padding: 96px 20px; }.hero-section { min-height: auto; padding-top: 80px; }.hero-grid, .reimbursement-grid, .workflow-grid, .outage-grid { grid-template-columns: 1fr; gap: 56px; }.hero-copy h1 { font-size: 52px; }.feature-grid { grid-template-columns: repeat(2, 1fr); }.feature-card-dark { grid-row: auto; }.feature-card-tall { min-height: 360px; }.automation-grid { grid-template-columns: 1fr; }.access-grid { grid-template-columns: 1fr; }.mobile-access-card { min-height: 520px; }.cta-card { padding: 48px; }.reimbursement-grid > div:first-child { max-width: 680px; }.workflow-heading-row { align-items: flex-start; flex-direction: column; }.workflow-tabs { margin: -24px 0 36px; }
   .workflow-series-intro { padding: 64px 20px 44px; }
   .hero-flow + .platform-section { padding-top: 68px; }
-  .workflow-series-intro-layout { grid-template-columns: minmax(190px, .72fr) minmax(0, 1.28fr); gap: 20px; }
+  .workflow-series-intro-layout { grid-template-columns: 1fr; gap: 32px; }
   .workflow-series-intro h2 { font-size: 36px; }
   .workflow-series-intro p { font-size: 14px; }
   .feature-access-strip { align-items: flex-start; flex-direction: column; }.feature-access-options { display: grid; width: 100%; grid-template-columns: repeat(3, minmax(0, 1fr)); }.feature-access-option { min-width: 0; }
@@ -1525,11 +1606,11 @@ export default {
   .hero-copy h1 { font-size: 42px; }.hero-proof { gap: 12px; flex-direction: column; }.floating-result { left: 8px; bottom: 14px; }.feature-grid { grid-template-columns: 1fr; }.feature-card, .automation-card, .mobile-access-card { padding: 22px; }.feature-card-tall { min-height: 440px; }.section-title { font-size: 36px; }.reimbursement-demo, .api-access-card { grid-template-columns: 1fr; }.estimate-results { border-top: 1px solid var(--qa-border); border-left: 0; }.workflow-grid { gap: 34px; }.two-fields { grid-template-columns: 1fr; gap: 0; }.outage-grid { gap: 42px; }.payer-status-card li { grid-template-columns: 1fr auto; }.payer-status-card li small { display: none; }.metric-grid { grid-template-columns: 1fr; }.access-section .section-title { font-size: 36px; }.api-access-card pre { border-top: 1px solid rgba(255,255,255,.08); }.cta-card { align-items: stretch; flex-direction: column; padding: 38px 28px; }.cta-card h2 { font-size: 35px; }.mobile-store-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }.mobile-store-links a { min-width: 0; }.mobile-result-float { right: 6px; }
   .workflow-series-intro { padding: 44px 14px 26px; }
   .hero-flow + .platform-section { padding-top: 56px; }
-  .workflow-series-intro-layout { grid-template-columns: minmax(128px, .7fr) minmax(0, 1.3fr); gap: 8px; }
+  .workflow-series-intro-layout { grid-template-columns: 1fr; gap: 24px; }
   .workflow-series-intro .section-kicker { padding: 4px 8px; font-size: 8px; letter-spacing: .05em; }
   .workflow-series-intro h2 { margin-top: 14px; font-size: 26px; line-height: 1.08; }
   .workflow-series-intro p { font-size: 11px; line-height: 1.5; }
-  .workflow-journey-map { height: 245px; }.workflow-journey-marker { width: 42px; height: 42px; font-size: 14px; }.workflow-journey-flag { width: 18px; height: 18px; }.workflow-journey-copy { width: 88px; margin-top: 7px; padding: 3px 4px; border-radius: 6px; background: rgba(255,255,255,.84); }.workflow-journey-copy strong { font-size: 7px; line-height: 1.15; white-space: nowrap; }.workflow-journey-copy small { display: none; }.workflow-journey-hud { bottom: 53px; width: 118px; animation: journey-hud-mobile-position 36s step-end infinite; }.workflow-journey-hud::before { padding: 5px 6px; font-size: 5.5px; }.journey-reward { top: 24px; padding: 3px 5px; }.workflow-journey-record { width: 82px; padding: 5px 6px 4px; border-radius: 8px; animation: journey-record-actions 36s ease-in-out infinite, journey-record-mobile-anchor 36s step-end infinite; }.journey-record-main { grid-template-columns: 19px minmax(0, 1fr) 7px; gap: 4px; }.journey-record-patient { width: 19px; height: 19px; border-radius: 6px; font-size: 7px; }.journey-record-copy small { font-size: 3.8px; }.journey-record-copy strong { font-size: 5.4px; }.journey-record-check { font-size: 6px; }.journey-record-progress { height: 2px; margin-top: 4px; }.journey-tool { top: -7px; right: -7px; width: 16px; height: 16px; font-size: 5px; }
+  .workflow-journey-map { height: 245px; }.workflow-journey-marker { width: 42px; height: 42px; font-size: 14px; }.workflow-journey-flag { width: 18px; height: 18px; }.workflow-journey-copy { width: 80px; margin-top: 7px; padding: 3px 4px; border-radius: 6px; background: rgba(255,255,255,.84); }.workflow-journey-copy strong { font-size: 7px; line-height: 1.15; white-space: nowrap; }.workflow-journey-copy small { display: none; }.workflow-journey-hud { bottom: 53px; width: 118px; animation: journey-hud-mobile-position 42s step-end infinite; }.workflow-journey-hud::before { padding: 5px 6px; font-size: 5.5px; }.journey-reward { top: 24px; padding: 3px 5px; }.workflow-journey-record { width: 82px; padding: 5px 6px 4px; border-radius: 8px; animation: journey-record-actions 42s ease-in-out infinite, journey-record-mobile-anchor 42s step-end infinite; }.journey-record-main { grid-template-columns: 19px minmax(0, 1fr) 7px; gap: 4px; }.journey-record-patient { width: 19px; height: 19px; border-radius: 6px; font-size: 7px; }.journey-record-copy small { font-size: 3.8px; }.journey-record-copy strong { font-size: 5.4px; }.journey-record-check { font-size: 6px; }.journey-record-progress { height: 2px; margin-top: 4px; }.journey-tool { top: -7px; right: -7px; width: 16px; height: 16px; font-size: 5px; }
   .platform-section { padding-bottom: 64px; }.platform-section .section-title { margin-bottom: 28px; }.platform-section .feature-card { padding: 18px; }.feature-card:not(.feature-card-dark) { min-height: 0; padding: 18px; }.feature-access-options { grid-template-columns: 1fr; }.feature-access-strip { padding: 18px; }.inquiry-response-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .workflow-form-card { min-height: 445px; }.workflow-demo-stage, .workflow-demo-form, .workflow-demo-result { min-height: 391px; }.workflow-cursor-provider, .workflow-cursor-first { top: 67px; left: 78%; }.workflow-cursor-payer, .workflow-cursor-last { top: 132px; left: 78%; }.workflow-cursor-patient, .workflow-demo-blanket .workflow-cursor-dob { top: 197px; left: 78%; }.workflow-demo-inquiry .workflow-cursor-dob, .workflow-cursor-state { top: 262px; left: 78%; }.workflow-cursor-asof, .workflow-cursor-ssn { top: 327px; left: 78%; }.workflow-cursor-button { top: 396px; }
   .blanket-policy-card { padding: 11px 10px; }.blanket-policy-card > span:nth-child(2) strong { font-size: 10px; }.blanket-policy-card > span:nth-child(2) small, .blanket-policy-card > b { font-size: 7px; }
@@ -1538,17 +1619,17 @@ export default {
   .hero-visual { min-height: 450px; }.hero-card-frame { height: 416px; }
 }
 @keyframes journey-hud-mobile-position {
-  0%, 16.5%, 83.3%, 100% { transform: translateX(-5%); }
-  16.6%, 33.2%, 66.6%, 83.2% { transform: translateX(-50%); }
-  33.3%, 66.5% { transform: translateX(-95%); }
+  0%, 14.1%, 85.7%, 100% { transform: translateX(-5%); }
+  14.2%, 42.7%, 71.4%, 85.6% { transform: translateX(-50%); }
+  42.9%, 71.3% { transform: translateX(-95%); }
 }
 @keyframes journey-record-mobile-anchor {
-  0%, 16.5%, 83.3%, 100% { transform: translateX(-5%); }
-  16.6%, 33.2%, 66.6%, 83.2% { transform: translateX(-50%); }
-  33.3%, 66.5% { transform: translateX(-95%); }
+  0%, 14.1%, 85.7%, 100% { transform: translateX(-5%); }
+  14.2%, 42.7%, 71.4%, 85.6% { transform: translateX(-50%); }
+  42.9%, 71.3% { transform: translateX(-95%); }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-card-frame, .status-dot.online, .workflow-journey-route-dots, .workflow-journey-marker, .workflow-journey-marker::before, .workflow-journey-flag, .workflow-journey-guide, .workflow-journey-guide::before, .workflow-journey-hud, .workflow-journey-hud::before, .workflow-journey-record, .journey-record-status::before, .journey-record-progress i, .journey-tool, .journey-reward, .journey-reward i, .feature-preview-alert > i, .feature-access-option > i:first-child, .payer-status-card li, .payer-status-card li > span, .payer-status-card li > span .status-dot, .phone-mockup, .mobile-result-float, .phone-policy > span > i, .blanket-result-patient, .blanket-policy-card { animation: none; }
-  .feature-card-interactive, .feature-card-description, .feature-response-preview, .feature-preview-row, .feature-preview-metrics div, .feature-preview-progress i, .feature-preview-export > i, .feature-access-option, .feature-access-arrow, .mobile-store-links a { transition: none; }
+  .feature-card-interactive, .feature-card-description, .feature-response-preview, .feature-preview-row, .feature-preview-metrics div, .feature-preview-progress i, .feature-access-option, .feature-access-arrow, .mobile-store-links a { transition: none; }
 }
 </style>

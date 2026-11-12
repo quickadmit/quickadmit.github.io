@@ -8,6 +8,7 @@
       <div class="footer-group">
         <h3>Platform</h3>
         <router-link to="/products">All products</router-link>
+        <router-link to="/#patient-verifier">Patient Verifier</router-link>
         <router-link to="/#workflows">Inquiries</router-link>
         <router-link to="/#workflows">Blanket VOB</router-link>
         <router-link to="/#reimbursement">Reimbursement</router-link>

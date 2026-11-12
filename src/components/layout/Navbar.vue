@@ -23,6 +23,7 @@
               Products <i class="fas fa-chevron-down" aria-hidden="true"></i>
             </button>
             <div class="products-dropdown">
+              <router-link to="/#patient-verifier" @click="closeMenus"><i class="fas fa-user-check"></i> Patient Verifier</router-link>
               <router-link to="/#outages" @click="closeMenus"><i class="fas fa-signal"></i> Payer intelligence</router-link>
               <router-link to="/?workflow=inquiry#workflows" @click="closeMenus"><i class="fas fa-magnifying-glass"></i> Inquiries</router-link>
               <router-link to="/?workflow=blanket#workflows" @click="closeMenus"><i class="fas fa-shield-halved"></i> Blanket VOB</router-link>

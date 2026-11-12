@@ -53,6 +53,12 @@ export default {
     return {
       products: [
         {
+          title: "Patient Verifier",
+          description: "Find matching patient details, review match scores, and continue with the selected patient in Blanket VOB.",
+          icon: "fas fa-user-check",
+          to: "/#patient-verifier",
+        },
+        {
           title: "Payer intelligence",
           description: "Check live payer availability and use redundant connections to reduce avoidable interruptions.",
           icon: "fas fa-signal",
