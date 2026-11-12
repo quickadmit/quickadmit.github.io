@@ -865,7 +865,7 @@ export default {
           id: "patient-verifier",
           title: "Patient Verifier",
           icon: "fas fa-user-check",
-          body: "Find matching patient details, review match scores, and continue with the selected patient in Blanket VOB.",
+          body: "With very little information, retrieve, confirm or correct client details, including address, DOB and SSN.",
           preview: {
             type: "patient",
             badge: "Match scores",

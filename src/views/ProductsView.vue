@@ -54,7 +54,7 @@ export default {
       products: [
         {
           title: "Patient Verifier",
-          description: "Find matching patient details, review match scores, and continue with the selected patient in Blanket VOB.",
+          description: "With very little information, retrieve, confirm or correct client details, including address, DOB and SSN.",
           icon: "fas fa-user-check",
           to: "/#patient-verifier",
         },
